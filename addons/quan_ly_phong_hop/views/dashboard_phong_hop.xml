@@ -1,0 +1,418 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!-- Dashboard Form View -->
+        <record id="view_dashboard_phong_hop_form" model="ir.ui.view">
+            <field name="name">dashboard.phong.hop.form</field>
+            <field name="model">dashboard_phong_hop</field>
+            <field name="type">form</field>
+            <field name="arch" type="xml">
+                <form string="Dashboard Phòng Họp" js_class="dashboard_phong_hop_view" create="0" delete="0" edit="0" hide_header="1" hide_action="1" hide_toolbar="1">
+                    <field name="name" invisible="1"/>
+                    <div class="o_dashboards">
+                        <div class="container-fluid o_dashboard_common">
+                            <!-- Title - Spica Style -->
+                            <div class="d-sm-flex justify-content-between align-items-center mb-4">
+                                <h4 class="mb-0 font-weight-bold">Trung tâm điều hành phòng họp</h4>
+                            </div>
+                            
+                            <!-- Bộ lọc nâng cao - Spica Style -->
+                            <div class="row">
+                                <div class="col-12 grid-margin stretch-card">
+                                    <div class="card o_dashboard_card">
+                                        <div class="card-body">
+                                            <h4 class="card-title mb-4">Bộ lọc</h4>
+                                            <div class="row dashboard-filters">
+                                                <div class="col-md-2">
+                                                    <div class="o_form_label">Địa điểm:</div>
+                                                    <select id="filter_location" class="form-control">
+                                                        <option value="">Tất cả</option>
+                                                    </select>
+                                                </div>
+                                                <div class="col-md-2">
+                                                    <div class="o_form_label">Phòng ban:</div>
+                                                    <select id="filter_department" class="form-control">
+                                                        <option value="">Tất cả</option>
+                                                    </select>
+                                                </div>
+                                                <div class="col-md-2">
+                                                    <div class="o_form_label">Chức vụ:</div>
+                                                    <select id="filter_chuc_vu" class="form-control">
+                                                        <option value="">Tất cả</option>
+                                                    </select>
+                                                </div>
+                                                <div class="col-md-2">
+                                                    <div class="o_form_label">Khoảng thời gian:</div>
+                                                    <select id="filter_period" class="form-control">
+                                                        <option value="today">Hôm nay</option>
+                                                        <option value="week">Tuần này</option>
+                                                        <option value="month" selected="selected">Tháng này</option>
+                                                    </select>
+                                                </div>
+                                                <div class="col-md-4 d-flex align-items-end btn-group" role="group">
+                                                    <a href="#" id="btn_apply_filter" class="btn btn-primary mr-2" role="button" onclick="return false;">Áp dụng</a>
+                                                    <a href="#" id="btn_reset_filter" class="btn btn-secondary" role="button" onclick="return false;">Đặt lại</a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- KPI Chiến lược - Spica Style -->
+                            <div class="row o_dashboard_stat_cards">
+                                <div class="col-lg-2 col-md-4 col-sm-6 grid-margin stretch-card">
+                                    <div class="card o_dashboard_card">
+                                        <div class="card-body text-center">
+                                            <h5 class="card-title text-primary">Tổng số phòng</h5>
+                                            <h2 class="card-text text-primary" id="total_phong">0</h2>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-2 col-md-4 col-sm-6 grid-margin stretch-card">
+                                    <div class="card o_dashboard_card">
+                                        <div class="card-body text-center">
+                                            <h5 class="card-title text-info">Cuộc họp hôm nay</h5>
+                                            <h2 class="card-text text-info" id="meetings_today">0</h2>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-2 col-md-4 col-sm-6 grid-margin stretch-card">
+                                    <div class="card o_dashboard_card">
+                                        <div class="card-body text-center">
+                                            <h5 class="card-title text-success">Cuộc họp tuần này</h5>
+                                            <h2 class="card-text text-success" id="meetings_week">0</h2>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-2 col-md-4 col-sm-6 grid-margin stretch-card">
+                                    <div class="card o_dashboard_card">
+                                        <div class="card-body text-center">
+                                            <h5 class="card-title text-warning">Tổng giờ sử dụng</h5>
+                                            <h2 class="card-text text-warning" id="total_hours">0</h2>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-2 col-md-4 col-sm-6 grid-margin stretch-card">
+                                    <div class="card o_dashboard_card">
+                                        <div class="card-body text-center">
+                                            <h5 class="card-title text-primary">Tỷ lệ sử dụng</h5>
+                                            <h2 class="card-text text-primary" id="ty_le_su_dung">0%</h2>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-2 col-md-4 col-sm-6 grid-margin stretch-card">
+                                    <div class="card o_dashboard_card">
+                                        <div class="card-body text-center">
+                                            <h5 class="card-title text-danger">Tỷ lệ lãng phí</h5>
+                                            <h2 class="card-text text-danger" id="ty_le_lang_phi">0%</h2>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- KPI bổ sung - Spica Style -->
+                            <div class="row">
+                                <div class="col-lg-3 col-md-6 grid-margin stretch-card">
+                                    <div class="card o_dashboard_card">
+                                        <div class="card-body text-center">
+                                            <h6 class="card-title">Tỷ lệ hủy phòng</h6>
+                                            <h3 class="text-warning" id="ty_le_huy">0%</h3>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-3 col-md-6 grid-margin stretch-card">
+                                    <div class="card o_dashboard_card">
+                                        <div class="card-body text-center">
+                                            <h6 class="card-title">Tỷ lệ không check-in</h6>
+                                            <h3 class="text-danger" id="ty_le_no_show">0%</h3>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-3 col-md-6 grid-margin stretch-card">
+                                    <div class="card o_dashboard_card">
+                                        <div class="card-body text-center">
+                                            <h6 class="card-title">Đang sử dụng</h6>
+                                            <h3 class="text-success" id="phong_dang_su_dung">0</h3>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-3 col-md-6 grid-margin stretch-card">
+                                    <div class="card o_dashboard_card">
+                                        <div class="card-body text-center">
+                                            <h6 class="card-title">Đang bảo trì</h6>
+                                            <h3 class="text-info" id="phong_bao_tri">0</h3>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Heatmap và Charts Row - Spica Style -->
+                            <div class="row">
+                                <div class="col-lg-12 grid-margin stretch-card">
+                                    <div class="card o_dashboard_card">
+                                        <div class="card-body">
+                                            <h4 class="card-title">Bản đồ sử dụng phòng (Heatmap) - Giờ x Phòng</h4>
+                                            <div id="heatmapContainer">
+                                                <canvas id="heatmapChart" height="400"></canvas>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-lg-6 grid-margin stretch-card">
+                                    <div class="card o_dashboard_card">
+                                        <div class="card-body">
+                                            <h4 class="card-title">Tỷ lệ sử dụng phòng (7 ngày gần nhất)</h4>
+                                            <canvas id="usageChart" height="300"></canvas>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-6 grid-margin stretch-card">
+                                    <div class="card o_dashboard_card">
+                                        <div class="card-body">
+                                            <h4 class="card-title">Top 5 phòng được dùng nhiều nhất</h4>
+                                            <canvas id="topRoomsChart" height="300"></canvas>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Hiệu suất theo phòng ban - Spica Style -->
+                            <div class="row">
+                                <div class="col-lg-6 grid-margin stretch-card">
+                                    <div class="card o_dashboard_card">
+                                        <div class="card-body">
+                                            <h4 class="card-title">Hiệu suất theo phòng ban</h4>
+                                            <canvas id="deptPerformanceChart" height="300"></canvas>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-6 grid-margin stretch-card">
+                                    <div class="card o_dashboard_card">
+                                        <div class="card-body">
+                                            <h4 class="card-title">Phân tích chất lượng cuộc họp</h4>
+                                            <canvas id="qualityChart" height="300"></canvas>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Tình trạng tài sản &amp; Hoạt động gần đây - Spica Style -->
+                            <div class="row">
+                                <div class="col-lg-6 grid-margin stretch-card">
+                                    <div class="card o_dashboard_card">
+                                        <div class="card-body">
+                                            <h4 class="card-title">Tình trạng tài sản &amp; phòng</h4>
+                                            <div class="table-responsive">
+                                                <table class="table table-hover">
+                                                    <thead>
+                                                        <tr>
+                                                            <th>Phòng</th>
+                                                            <th>Số lần bảo trì</th>
+                                                            <th>Tài sản có vấn đề</th>
+                                                            <th>Tổng tài sản</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody id="assetHealthTable">
+                                                        <tr><td colspan="4" class="text-center loading-placeholder">Đang tải...</td></tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-6 grid-margin stretch-card">
+                                    <div class="card o_dashboard_card">
+                                        <div class="card-body">
+                                            <h4 class="card-title">Hoạt động gần đây</h4>
+                                            <div class="table-responsive" style="max-height: 400px; overflow-y: auto;">
+                                                <table class="table table-hover">
+                                                    <thead>
+                                                        <tr>
+                                                            <th>Thời gian</th>
+                                                            <th>Hành động</th>
+                                                            <th>Phòng</th>
+                                                            <th>Người thực hiện</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody id="recentActivitiesTable">
+                                                        <tr><td colspan="4" class="text-center loading-placeholder">Đang tải...</td></tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Quick Actions & Real-time Data - Spica Style -->
+                            <div class="row">
+                                <div class="col-lg-12 grid-margin stretch-card">
+                                    <div class="card o_dashboard_card">
+                                        <div class="card-body">
+                                            <h4 class="card-title mb-4">Điều phối nhanh (Quick Actions)</h4>
+                                            <div class="row btn-toolbar" role="toolbar">
+                                                <div class="col-md-3 mb-3">
+                                                    <a href="#" class="btn btn-primary btn-block" id="btn_quick_book" role="button" onclick="return false;">
+                                                        <i class="fa fa-plus"></i> Đặt nhanh phòng trống
+                                                    </a>
+                                                </div>
+                                                <div class="col-md-3 mb-3">
+                                                    <a href="#" class="btn btn-success btn-block" id="btn_quick_checkin" role="button" onclick="return false;">
+                                                        <i class="fa fa-check"></i> Check-in hộ
+                                                    </a>
+                                                </div>
+                                                <div class="col-md-3 mb-3">
+                                                    <a href="#" class="btn btn-warning btn-block" id="btn_quick_end" role="button" onclick="return false;">
+                                                        <i class="fa fa-stop"></i> Kết thúc sớm
+                                                    </a>
+                                                </div>
+                                                <div class="col-md-3 mb-3">
+                                                    <a href="#" class="btn btn-info btn-block" id="btn_quick_unlock" role="button" onclick="return false;">
+                                                        <i class="fa fa-unlock"></i> Mở khóa phòng
+                                                    </a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Cảnh báo & Rủi ro - Spica Style -->
+                            <div class="row">
+                                <div class="col-lg-12 grid-margin stretch-card">
+                                    <div class="card o_dashboard_card">
+                                        <div class="card-body">
+                                            <h4 class="card-title mb-4">
+                                                <i class="fa fa-exclamation-triangle text-warning"></i> Cảnh báo &amp; Rủi ro
+                                            </h4>
+                                            <div id="warningsContainer">
+                                                <div class="text-center loading-placeholder">Đang tải...</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Real-time Data - Spica Style -->
+                            <div class="row">
+                                <div class="col-lg-6 grid-margin stretch-card">
+                                    <div class="card o_dashboard_card">
+                                        <div class="card-body">
+                                            <h4 class="card-title">
+                                                <i class="fa fa-clock-o text-success"></i> Phòng đang họp (Real-time)
+                                            </h4>
+                                            <div class="table-responsive" style="max-height: 300px; overflow-y: auto;">
+                                                <table class="table table-hover">
+                                                    <thead>
+                                                        <tr>
+                                                            <th>Phòng</th>
+                                                            <th>Cuộc họp</th>
+                                                            <th>Chủ trì</th>
+                                                            <th>Thời gian</th>
+                                                            <th>Hành động</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody id="phongDangHopTable">
+                                                        <tr><td colspan="5" class="text-center loading-placeholder">Đang tải...</td></tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-6 grid-margin stretch-card">
+                                    <div class="card o_dashboard_card">
+                                        <div class="card-body">
+                                            <h4 class="card-title">
+                                                <i class="fa fa-calendar-check-o text-info"></i> Cuộc họp sắp bắt đầu (30-60 phút)
+                                            </h4>
+                                            <div class="table-responsive" style="max-height: 300px; overflow-y: auto;">
+                                                <table class="table table-hover">
+                                                    <thead>
+                                                        <tr>
+                                                            <th>Phòng</th>
+                                                            <th>Cuộc họp</th>
+                                                            <th>Chủ trì</th>
+                                                            <th>Còn lại</th>
+                                                            <th>Hành động</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody id="cuocHopSapBatDauTable">
+                                                        <tr><td colspan="5" class="text-center loading-placeholder">Đang tải...</td></tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Quick Lists Row - Spica Style -->
+                            <div class="row">
+                                <div class="col-lg-6 grid-margin stretch-card">
+                                    <div class="card o_dashboard_card">
+                                        <div class="card-body">
+                                            <h4 class="card-title">Cuộc họp sắp diễn ra (2 giờ tới)</h4>
+                                            <div class="table-responsive">
+                                                <table class="table table-hover">
+                                                    <thead>
+                                                        <tr>
+                                                            <th>Thời gian</th>
+                                                            <th>Phòng</th>
+                                                            <th>Cuộc họp</th>
+                                                            <th>Chủ trì</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody id="upcomingMeetingsTable">
+                                                        <tr><td colspan="4" class="text-center loading-placeholder">Đang tải...</td></tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-6 grid-margin stretch-card">
+                                    <div class="card o_dashboard_card">
+                                        <div class="card-body">
+                                            <h4 class="card-title">Phòng sắp hết giờ (30 phút tới)</h4>
+                                            <div class="table-responsive">
+                                                <table class="table table-hover">
+                                                    <thead>
+                                                        <tr>
+                                                            <th>Thời gian kết thúc</th>
+                                                            <th>Phòng</th>
+                                                            <th>Cuộc họp</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody id="endingSoonTable">
+                                                        <tr><td colspan="3" class="text-center loading-placeholder">Đang tải...</td></tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </field>
+        </record>
+
+        <!-- Action -->
+        <!-- Action Dashboard - Tự động tạo record khi mở -->
+        <record id="action_dashboard_phong_hop" model="ir.actions.act_window">
+            <field name="name">Dashboard Phòng Họp</field>
+            <field name="res_model">dashboard_phong_hop</field>
+            <field name="view_mode">form</field>
+            <field name="view_id" ref="view_dashboard_phong_hop_form"/>
+            <field name="target">current</field>
+            <field name="context">{'create': True, 'delete': False, 'default_name': 'Dashboard'}</field>
+            <field name="limit">1</field>
+        </record>
+    </data>
+</odoo>

@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="view_wizard_multi_room_booking" model="ir.ui.view">
+            <field name="name">wizard.multi.room.booking.form</field>
+            <field name="model">wizard.multi.room.booking</field>
+            <field name="arch" type="xml">
+                <form string="Đặt nhiều phòng cho một sự kiện">
+                    <group>
+                        <group>
+                            <field name="parent_booking_id" readonly="1"/>
+                            <field name="name"/>
+                            <field name="start_datetime"/>
+                            <field name="end_datetime"/>
+                            <field name="host_id"/>
+                            <field name="muc_dich"/>
+                        </group>
+                        <group>
+                            <field name="phong_hop_ids" widget="many2many_tags" 
+                                   options="{'no_create': True}"
+                                   domain="[('state', '=', 'available')]"
+                                   help="Chọn các phòng cần đặt cho cùng một sự kiện"/>
+                        </group>
+                    </group>
+                    <footer>
+                        <button string="Tạo booking" name="action_create_bookings" type="object" class="btn-primary"/>
+                        <button string="Đóng" class="btn-secondary" special="cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+    </data>
+</odoo>

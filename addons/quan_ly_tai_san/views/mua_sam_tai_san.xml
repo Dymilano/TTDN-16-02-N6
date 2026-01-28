@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!-- Form View -->
+        <record id="view_mua_sam_tai_san_form" model="ir.ui.view">
+            <field name="name">mua.sam.tai.san.form</field>
+            <field name="model">mua_sam_tai_san</field>
+            <field name="arch" type="xml">
+                <form string="Mua sắm tài sản">
+                    <header>
+                        <button name="action_approve" string="Duyệt" type="object" class="oe_highlight" attrs="{'invisible': [('state', '!=', 'draft')]}"/>
+                        <button name="action_receive" string="Nhận hàng" type="object" class="oe_highlight" attrs="{'invisible': [('state', '!=', 'approved')]}"/>
+                        <button name="action_cancel" string="Hủy" type="object" attrs="{'invisible': [('state', 'in', ('received', 'cancelled'))]}"/>
+                        <field name="state" widget="statusbar" statusbar_visible="draft,approved,received"/>
+                    </header>
+                    <sheet>
+                        <div class="oe_title">
+                            <h1>
+                                <field name="name" readonly="1"/>
+                            </h1>
+                        </div>
+                        <group>
+                            <group>
+                                <field name="nha_cung_cap_id" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                                <field name="ngay_mua" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                            </group>
+                            <group>
+                                <field name="nguoi_mua_id" readonly="1"/>
+                                <field name="total_amount"/>
+                            </group>
+                        </group>
+                        <notebook>
+                            <page string="Chi tiết mua sắm">
+                                <field name="line_ids" attrs="{'readonly': [('state', '!=', 'draft')]}">
+                                    <tree editable="bottom">
+                                        <field name="ten_tai_san"/>
+                                        <field name="danh_muc_id"/>
+                                        <field name="don_vi_tinh"/>
+                                        <field name="so_luong"/>
+                                        <field name="don_gia"/>
+                                        <field name="thanh_tien"/>
+                                    </tree>
+                                </field>
+                            </page>
+                        </notebook>
+                        <field name="ghi_chu" placeholder="Ghi chú..."/>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <!-- Tree View -->
+        <record id="view_mua_sam_tai_san_tree" model="ir.ui.view">
+            <field name="name">mua.sam.tai.san.tree</field>
+            <field name="model">mua_sam_tai_san</field>
+            <field name="arch" type="xml">
+                <tree string="Mua sắm tài sản">
+                    <field name="name"/>
+                    <field name="nha_cung_cap_id"/>
+                    <field name="ngay_mua"/>
+                    <field name="total_amount"/>
+                    <field name="state"/>
+                </tree>
+            </field>
+        </record>
+
+        <!-- Action -->
+        <record id="action_mua_sam_tai_san" model="ir.actions.act_window">
+            <field name="name">Mua sắm tài sản</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">mua_sam_tai_san</field>
+            <field name="view_mode">tree,form</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    Tạo phiếu mua sắm mới
+                </p>
+            </field>
+        </record>
+    </data>
+</odoo>

@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!-- Form View -->
+        <record id="view_bao_tri_tai_san_form" model="ir.ui.view">
+            <field name="name">bao.tri.tai.san.form</field>
+            <field name="model">bao_tri_tai_san</field>
+            <field name="arch" type="xml">
+                <form string="Bảo trì tài sản">
+                    <header>
+                        <button name="action_start" string="Bắt đầu" type="object" class="oe_highlight" attrs="{'invisible': [('state', '!=', 'draft')]}"/>
+                        <button name="action_done" string="Hoàn thành" type="object" class="oe_highlight" attrs="{'invisible': [('state', '!=', 'in_progress')]}"/>
+                        <button name="action_cancel" string="Hủy" type="object" attrs="{'invisible': [('state', 'in', ('done', 'cancelled'))]}"/>
+                        <field name="state" widget="statusbar" statusbar_visible="draft,in_progress,done"/>
+                    </header>
+                    <sheet>
+                        <div class="oe_title">
+                            <h1>
+                                <field name="name" readonly="1"/>
+                            </h1>
+                        </div>
+                        <group>
+                            <group>
+                                <field name="tai_san_id" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                                <field name="loai_bao_tri" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                            </group>
+                            <group>
+                                <field name="ngay_bao_tri" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                                <field name="nha_cung_cap_id" attrs="{'readonly': [('state', 'in', ('done', 'cancelled'))]}"/>
+                            </group>
+                        </group>
+                        <group string="Chi tiết &amp; Nguyên nhân">
+                            <field name="mo_ta" placeholder="Mô tả chi tiết sự cố hoặc yêu cầu bảo trì..." attrs="{'readonly': [('state', 'in', ('done', 'cancelled'))]}"/>
+                            <field name="nguyen_nhan" placeholder="Nguyên nhân..." attrs="{'readonly': [('state', 'in', ('done', 'cancelled'))]}"/>
+                            <field name="linh_kien_thay_the" placeholder="Liệt kê linh kiện thay thế..." attrs="{'readonly': [('state', 'in', ('done', 'cancelled'))]}"/>
+                        </group>
+                        <group string="Kết quả &amp; Chi phí">
+                             <group>
+                                <field name="ngay_hoan_thanh" readonly="1"/>
+                                <field name="thoi_gian_dung_may"/>
+                                <field name="ket_qua" placeholder="Ghi chú kết quả..."/>
+                             </group>
+                             <group>
+                                <field name="chi_phi_nhan_cong" attrs="{'readonly': [('state', 'in', ('done', 'cancelled'))]}"/>
+                                <field name="chi_phi_vat_tu" attrs="{'readonly': [('state', 'in', ('done', 'cancelled'))]}"/>
+                                <field name="chi_phi_thue_ngoai" attrs="{'readonly': [('state', 'in', ('done', 'cancelled'))]}"/>
+                                <field name="tong_chi_phi" readonly="1" class="oe_subtotal_footer_separator"/>
+                             </group>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <!-- Tree View -->
+        <record id="view_bao_tri_tai_san_tree" model="ir.ui.view">
+            <field name="name">bao.tri.tai.san.tree</field>
+            <field name="model">bao_tri_tai_san</field>
+            <field name="arch" type="xml">
+                <tree string="Bảo trì tài sản">
+                    <field name="name"/>
+                    <field name="tai_san_id"/>
+                    <field name="loai_bao_tri"/>
+                    <field name="ngay_bao_tri"/>
+                    <field name="state"/>
+                </tree>
+            </field>
+        </record>
+
+        <!-- Action -->
+        <record id="action_bao_tri_tai_san" model="ir.actions.act_window">
+            <field name="name">Bảo trì tài sản</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">bao_tri_tai_san</field>
+            <field name="view_mode">tree,form</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    Tạo phiếu bảo trì mới
+                </p>
+            </field>
+        </record>
+    </data>
+</odoo>

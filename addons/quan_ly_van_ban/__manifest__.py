@@ -7,25 +7,27 @@
         subtitle on modules listing or apps.openerp.com""",
 
     'description': """
-        Quản lý văn bản
+        Long description of module's purpose
     """,
 
-    'author': "Nguyễn Ngọc Đan Trường - 1504",
-    'website': "http://www.yourcompany.com",
+    'author': "FIT-DNU",
+    'website': "https://ttdn1501.aiotlabdnu.xyz/web",
 
     # Categories can be used to filter modules in modules listing
     # Check https://github.com/odoo/odoo/blob/15.0/odoo/addons/base/data/ir_module_category_data.xml
     # for the full list
-    'category': 'Human Resources',
+    'category': 'Uncategorized',
     'version': '0.1',
 
     # any module necessary for this one to work correctly
-    'depends': ['base'],
+    'depends': ['base', 'nhan_su'],
 
     # always loaded
     'data': [
         'security/ir.model.access.csv',
+        'views/van_ban_den.xml',
         'views/van_ban_di.xml',
+        'views/loai_van_ban.xml',
         'views/menu.xml',
     ],
     # only loaded in demonstration mode

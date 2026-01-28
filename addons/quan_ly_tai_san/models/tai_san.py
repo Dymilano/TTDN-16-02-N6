@@ -1,9 +1,16 @@
 from odoo import _, api, fields, models
 from odoo.exceptions import ValidationError
 from datetime import datetime
+import logging
+
+_logger = logging.getLogger(__name__)
+
+# Email address for automatic notifications
+ADMIN_EMAIL = 'nguyenduymilano@gmail.com'
 
 class TaiSan(models.Model):
     _name = 'tai_san'
+    _inherit = ['mail.thread', 'mail.activity.mixin']
     _description = 'Bảng chứa thông tin tài sản'
     _rec_name = 'cus_rec_name'
     _order = 'ngay_mua_ts desc'
@@ -15,6 +22,7 @@ class TaiSan(models.Model):
     ma_tai_san = fields.Char('Mã tài sản', required=True)
     ten_tai_san = fields.Char('Tên tài sản', required=True)
     ngay_mua_ts = fields.Date('Ngày mua tài sản', required=True)
+    nha_cung_cap_id = fields.Many2one('res.partner', string='Nhà cung cấp', domain=[('is_company', '=', True)])
     don_vi_tien_te = fields.Selection([
         ('vnd', 'VNĐ'),
         ('usd', '$'),
@@ -48,19 +56,48 @@ class TaiSan(models.Model):
         for record in self:
             record.cus_rec_name = record.ma_tai_san + ' - ' + record.ten_tai_san
 
-    phong_ban_su_dung_ids = fields.One2many('phan_bo_tai_san', 'tai_san_id', string='Phòng ban sử dụng')
+    state = fields.Selection([
+        ('new', 'Mới'),
+        ('in_use', 'Đang sử dụng'),
+        ('maintenance', 'Bảo trì'),
+        ('damaged', 'Hư hỏng'),
+        ('lost', 'Mất'),
+        ('liquidation', 'Thanh lý'),
+        ('sold', 'Đã bán'),
+        ('disposed', 'Đã hủy')
+    ], string='Trạng thái', default='new', required=True, tracking=True)
+
+    # Location & Responsibility
+    location_id = fields.Many2one('tai_san.location', string="Vị trí hiện tại", tracking=True)
+    custodian_id = fields.Many2one('nhan_vien', string="Người chịu trách nhiệm", tracking=True)
+    department_id = fields.Many2one('phong_ban', string="Phòng ban quản lý")
+
+    # Technical Details
+    manufacturer = fields.Char(string="Nhà sản xuất")
+    model_number = fields.Char(string="Model")
+    serial_number = fields.Char(string="Serial Number")
+    
+    is_shared_asset = fields.Boolean(string="Tài sản dùng chung", default=False)
+    
+    # Old Relation Fields
+    phong_ban_su_dung_ids = fields.One2many('phan_bo_tai_san', 'tai_san_id', string='Lịch sử phân bổ')
     lich_su_khau_hao_ids = fields.One2many('lich_su_khau_hao', 'ma_ts', string='Lịch sử khấu hao')
     kiem_ke_history_ids = fields.One2many('kiem_ke_tai_san_line', compute='_compute_kiem_ke_history_ids', string='Lịch sử kiểm kê')
     luan_chuyen_ids = fields.Many2many('luan_chuyen_tai_san', compute='_compute_luan_chuyen_ids', string='Phiếu luân chuyển')
     thanh_ly_ids = fields.One2many('thanh_ly_tai_san', 'tai_san_id', string='Lịch sử thanh lý')
+    
+    # Deprecate old status in favor of 'state' but keep for backward compatibility if needed or migrate logic
     trang_thai_thanh_ly = fields.Selection([
         ('chua_phan_bo', 'Chưa phân bổ'),
         ('chua_thanh_ly', 'Chưa thanh lý'),
         ('da_phan_bo', 'Đã phân bổ'),
         ('da_thanh_ly', 'Đã thanh lý'),
-    ], string='Trạng thái', compute='_compute_trang_thai_thanh_ly', default='chua_phan_bo', store=True)
+    ], string='Trạng thái (Cũ)', compute='_compute_trang_thai_thanh_ly', store=True)
+
 
     lich_su_ky_thuat_ids = fields.One2many(comodel_name='lich_su_ky_thuat', inverse_name='tai_san_id', string='Tình trạng kỹ thuật')
+    booking_ids = fields.One2many(comodel_name='dat_phong', inverse_name='tai_san_id', string='Lịch sử đặt phòng')
+
     
     @api.depends('thanh_ly_ids', 'phong_ban_su_dung_ids')
     def _compute_trang_thai_thanh_ly(self):
@@ -142,3 +179,16 @@ class TaiSan(models.Model):
                 }
             )
 
+
+    qr_code = fields.Char(string='QR Code Data', compute='_compute_qr_code', store=True)
+
+    @api.depends('ma_tai_san')
+    def _compute_qr_code(self):
+        base_url = self.env['ir.config_parameter'].sudo().get_param('web.base.url')
+        for record in self:
+            if record.ma_tai_san:
+                # Generate a deep link to the asset or just the code
+                # Format: [CODE] Name
+                record.qr_code = f"Asset: {record.ma_tai_san} - {record.ten_tai_san}"
+            else:
+                record.qr_code = False

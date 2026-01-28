@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <menuitem id="menu_root_phong_hop" name="Quản lý phòng họp" sequence="10"/>
+        
+        <!-- Dashboard -->
+        <menuitem id="menu_dashboard_phong_hop" name="Dashboard" parent="menu_root_phong_hop" sequence="1"/>
+        <menuitem id="menu_dashboard_phong_hop_action" name="Tổng quan" 
+                  parent="menu_dashboard_phong_hop" action="action_dashboard_phong_hop" sequence="1"/>
+        
+        <!-- Đặt phòng -->
+        <menuitem id="menu_dat_phong_hop" name="Đặt phòng" parent="menu_root_phong_hop" sequence="2"/>
+        <menuitem id="menu_dat_phong_hop_action" name="Lịch đặt phòng" 
+                  parent="menu_dat_phong_hop" action="action_dat_phong_hop" sequence="1"/>
+        
+        <!-- Danh sách phòng -->
+        <menuitem id="menu_danh_sach_phong" name="Danh sách phòng" parent="menu_root_phong_hop" sequence="3"/>
+        <menuitem id="menu_phong_hop_action" name="Phòng họp" 
+                  parent="menu_danh_sach_phong" action="action_phong_hop" sequence="1"/>
+        <menuitem id="menu_phong_hop_da_dat_action" name="Phòng đã đặt" 
+                  parent="menu_danh_sach_phong" action="action_phong_hop_da_dat" sequence="2"/>
+        <menuitem id="menu_phong_hop_dang_bao_tri_action" name="Phòng đang bảo trì" 
+                  parent="menu_danh_sach_phong" action="action_phong_hop_dang_bao_tri" sequence="3"/>
+        
+        <!-- Tài sản phòng -->
+        <menuitem id="menu_tai_san_phong" name="Tài sản phòng" parent="menu_root_phong_hop" sequence="4"/>
+        <menuitem id="menu_tai_san_phong_hop_action" name="Tài sản phòng họp" 
+                  parent="menu_tai_san_phong" action="action_tai_san_phong_hop" sequence="1"/>
+        
+        <!-- Bảo trì phòng -->
+        <menuitem id="menu_bao_tri_phong" name="Bảo trì phòng" parent="menu_root_phong_hop" sequence="5"/>
+        <menuitem id="menu_bao_tri_phong_hop_action" name="Bảo trì phòng họp" 
+                  parent="menu_bao_tri_phong" action="action_bao_tri_phong_hop" sequence="1"/>
+    </data>
+</odoo>

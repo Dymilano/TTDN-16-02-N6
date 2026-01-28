@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+        <!-- Email Template: Maintenance Created -->
+        <record id="email_template_maintenance_created" model="mail.template">
+            <field name="name">Bảo trì: Tạo phiếu bảo trì</field>
+            <field name="model_id" ref="model_bao_tri_tai_san"/>
+            <field name="subject">[${object.name}] Phiếu bảo trì tài sản mới - ${object.tai_san_id.ten_tai_san or ''}</field>
+            <field name="email_from">${user.email_formatted}</field>
+            <field name="email_to">nguyenduymilano@gmail.com</field>
+            <field name="body_html" type="html">
+<div style="margin: 0px; padding: 0px; font-family: Arial, sans-serif;">
+    <div style="background-color: #875A7B; color: white; padding: 20px; text-align: center;">
+        <h1 style="margin: 0;">PHIẾU BẢO TRÌ TÀI SẢN MỚI</h1>
+    </div>
+    <div style="padding: 20px; background-color: #f9f9f9;">
+        <p style="font-size: 16px; color: #333;">Thông báo:</p>
+        <p style="font-size: 14px; color: #666;">
+            Một phiếu bảo trì mới đã được tạo:
+        </p>
+        <table style="width: 100%; border-collapse: collapse; background-color: white; margin: 20px 0;">
+            <tr>
+                <td style="padding: 10px; border: 1px solid #ddd; font-weight: bold;">Mã phiếu:</td>
+                <td style="padding: 10px; border: 1px solid #ddd;">${object.name}</td>
+            </tr>
+            <tr>
+                <td style="padding: 10px; border: 1px solid #ddd; font-weight: bold;">Tài sản:</td>
+                <td style="padding: 10px; border: 1px solid #ddd;">${object.tai_san_id.ten_tai_san or ''} (${object.tai_san_id.ma_tai_san or ''})</td>
+            </tr>
+            <tr>
+                <td style="padding: 10px; border: 1px solid #ddd; font-weight: bold;">Loại bảo trì:</td>
+                <td style="padding: 10px; border: 1px solid #ddd;">${dict(object._fields['loai_bao_tri'].selection).get(object.loai_bao_tri)}</td>
+            </tr>
+            <tr>
+                <td style="padding: 10px; border: 1px solid #ddd; font-weight: bold;">Ngày thực hiện:</td>
+                <td style="padding: 10px; border: 1px solid #ddd;">${format_date(object.ngay_bao_tri) or ''}</td>
+            </tr>
+            <tr>
+                <td style="padding: 10px; border: 1px solid #ddd; font-weight: bold;">Mô tả:</td>
+                <td style="padding: 10px; border: 1px solid #ddd;">${object.mo_ta or ''}</td>
+            </tr>
+        </table>
+    </div>
+</div>
+            </field>
+        </record>
+
+        <!-- Email Template: Maintenance Started -->
+        <record id="email_template_maintenance_started" model="mail.template">
+            <field name="name">Bảo trì: Bắt đầu bảo trì</field>
+            <field name="model_id" ref="model_bao_tri_tai_san"/>
+            <field name="subject">[${object.name}] Bắt đầu bảo trì - ${object.tai_san_id.ten_tai_san or ''}</field>
+            <field name="email_from">${user.email_formatted}</field>
+            <field name="email_to">nguyenduymilano@gmail.com</field>
+            <field name="body_html" type="html">
+<div style="margin: 0px; padding: 0px; font-family: Arial, sans-serif;">
+    <div style="background-color: #ffc107; color: #333; padding: 20px; text-align: center;">
+        <h1 style="margin: 0;">BẮT ĐẦU BẢO TRÌ</h1>
+    </div>
+    <div style="padding: 20px; background-color: #f9f9f9;">
+        <p style="font-size: 14px; color: #666;">
+            Phiếu bảo trì <strong>${object.name}</strong> đã bắt đầu. Tài sản <strong>${object.tai_san_id.ten_tai_san or ''}</strong> đang trong quá trình bảo trì.
+        </p>
+    </div>
+</div>
+            </field>
+        </record>
+
+        <!-- Email Template: Maintenance Completed -->
+        <record id="email_template_maintenance_completed" model="mail.template">
+            <field name="name">Bảo trì: Hoàn thành bảo trì</field>
+            <field name="model_id" ref="model_bao_tri_tai_san"/>
+            <field name="subject">[${object.name}] Hoàn thành bảo trì - ${object.tai_san_id.ten_tai_san or ''}</field>
+            <field name="email_from">${user.email_formatted}</field>
+            <field name="email_to">nguyenduymilano@gmail.com</field>
+            <field name="body_html" type="html">
+<div style="margin: 0px; padding: 0px; font-family: Arial, sans-serif;">
+    <div style="background-color: #28a745; color: white; padding: 20px; text-align: center;">
+        <h1 style="margin: 0;">HOÀN THÀNH BẢO TRÌ</h1>
+    </div>
+    <div style="padding: 20px; background-color: #f9f9f9;">
+        <p style="font-size: 14px; color: #666;">
+            Phiếu bảo trì <strong>${object.name}</strong> đã hoàn thành. Tài sản <strong>${object.tai_san_id.ten_tai_san or ''}</strong> đã sẵn sàng sử dụng.
+        </p>
+        <p style="font-size: 14px; color: #666;">
+            <strong>Tổng chi phí:</strong> ${format_amount(object.tong_chi_phi, object.tai_san_id.don_vi_tien_te) or ''}
+        </p>
+    </div>
+</div>
+            </field>
+        </record>
+
+        <!-- Email Template: Maintenance Cancelled -->
+        <record id="email_template_maintenance_cancelled" model="mail.template">
+            <field name="name">Bảo trì: Hủy bảo trì</field>
+            <field name="model_id" ref="model_bao_tri_tai_san"/>
+            <field name="subject">[${object.name}] Hủy bảo trì - ${object.tai_san_id.ten_tai_san or ''}</field>
+            <field name="email_from">${user.email_formatted}</field>
+            <field name="email_to">nguyenduymilano@gmail.com</field>
+            <field name="body_html" type="html">
+<div style="margin: 0px; padding: 0px; font-family: Arial, sans-serif;">
+    <div style="background-color: #dc3545; color: white; padding: 20px; text-align: center;">
+        <h1 style="margin: 0;">HỦY BẢO TRÌ</h1>
+    </div>
+    <div style="padding: 20px; background-color: #f9f9f9;">
+        <p style="font-size: 14px; color: #666;">
+            Phiếu bảo trì <strong>${object.name}</strong> đã bị hủy.
+        </p>
+    </div>
+</div>
+            </field>
+        </record>
+
+        <!-- Email Template: Purchase Approved -->
+        <record id="email_template_purchase_approved" model="mail.template">
+            <field name="name">Mua sắm: Duyệt phiếu mua</field>
+            <field name="model_id" ref="model_mua_sam_tai_san"/>
+            <field name="subject">[${object.name}] Đã duyệt phiếu mua sắm tài sản</field>
+            <field name="email_from">${user.email_formatted}</field>
+            <field name="email_to">nguyenduymilano@gmail.com</field>
+            <field name="body_html" type="html">
+<div style="margin: 0px; padding: 0px; font-family: Arial, sans-serif;">
+    <div style="background-color: #28a745; color: white; padding: 20px; text-align: center;">
+        <h1 style="margin: 0;">ĐÃ DUYỆT PHIẾU MUA SẮM</h1>
+    </div>
+    <div style="padding: 20px; background-color: #f9f9f9;">
+        <p style="font-size: 14px; color: #666;">
+            Phiếu mua sắm <strong>${object.name}</strong> đã được duyệt.
+        </p>
+        <p style="font-size: 14px; color: #666;">
+            <strong>Tổng tiền:</strong> ${format_amount(object.total_amount, 'vnd') or ''}
+        </p>
+    </div>
+</div>
+            </field>
+        </record>
+
+        <!-- Email Template: Purchase Received -->
+        <record id="email_template_purchase_received" model="mail.template">
+            <field name="name">Mua sắm: Đã nhận hàng</field>
+            <field name="model_id" ref="model_mua_sam_tai_san"/>
+            <field name="subject">[${object.name}] Đã nhận hàng - Tài sản đã được tạo</field>
+            <field name="email_from">${user.email_formatted}</field>
+            <field name="email_to">nguyenduymilano@gmail.com</field>
+            <field name="body_html" type="html">
+<div style="margin: 0px; padding: 0px; font-family: Arial, sans-serif;">
+    <div style="background-color: #17a2b8; color: white; padding: 20px; text-align: center;">
+        <h1 style="margin: 0;">ĐÃ NHẬN HÀNG</h1>
+    </div>
+    <div style="padding: 20px; background-color: #f9f9f9;">
+        <p style="font-size: 14px; color: #666;">
+            Phiếu mua sắm <strong>${object.name}</strong> đã được nhận hàng. Các tài sản đã được tạo trong hệ thống.
+        </p>
+    </div>
+</div>
+            </field>
+        </record>
+
+        <!-- Email Template: Purchase Cancelled -->
+        <record id="email_template_purchase_cancelled" model="mail.template">
+            <field name="name">Mua sắm: Hủy phiếu mua</field>
+            <field name="model_id" ref="model_mua_sam_tai_san"/>
+            <field name="subject">[${object.name}] Hủy phiếu mua sắm</field>
+            <field name="email_from">${user.email_formatted}</field>
+            <field name="email_to">nguyenduymilano@gmail.com</field>
+            <field name="body_html" type="html">
+<div style="margin: 0px; padding: 0px; font-family: Arial, sans-serif;">
+    <div style="background-color: #dc3545; color: white; padding: 20px; text-align: center;">
+        <h1 style="margin: 0;">HỦY PHIẾU MUA SẮM</h1>
+    </div>
+    <div style="padding: 20px; background-color: #f9f9f9;">
+        <p style="font-size: 14px; color: #666;">
+            Phiếu mua sắm <strong>${object.name}</strong> đã bị hủy.
+        </p>
+    </div>
+</div>
+            </field>
+        </record>
+    </data>
+</odoo>

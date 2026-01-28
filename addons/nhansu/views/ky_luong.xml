@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!-- View Kỳ lương -->
+        <record id="view_ky_luong_form" model="ir.ui.view">
+            <field name="name">ky_luong</field>
+            <field name="model">ky_luong</field>
+            <field name="arch" type="xml">
+                <form string="Kỳ lương">
+                    <sheet>
+                        <header>
+                            <button name="action_approve" type="object" string="Duyệt" class="btn-primary"
+                                    attrs="{'invisible': [('trang_thai','!=','draft')]}"/>
+                            <button name="action_lock" type="object" string="Khóa kỳ" class="btn-danger"
+                                    attrs="{'invisible': [('trang_thai','!=','approved')]}"/>
+                            <button name="action_generate_bang_luong" type="object" string="Tạo bảng lương" class="btn-secondary"
+                                    attrs="{'invisible': [('trang_thai','!=','locked')]}"/>
+                            <field name="trang_thai" widget="statusbar"/>
+                        </header>
+                        <div class="oe_read_only" style="font-size:25px">Kỳ lương</div>
+                        <group col="4" string="Thông tin kỳ lương">
+                            <field name="name" readonly="1"/>
+                            <field name="thang"/>
+                            <field name="nam"/>
+                            <field name="tu_ngay"/>
+                            <field name="den_ngay"/>
+                            <field name="trang_thai" readonly="1"/>
+                        </group>
+                        <notebook>
+                            <page string="Danh sách bảng lương">
+                                <field name="bang_luong_ids">
+                                    <tree>
+                                        <field name="nhan_vien_id"/>
+                                        <field name="luong_co_ban_thang"/>
+                                        <field name="tong_ngay_cong"/>
+                                        <field name="tong_gio_ot"/>
+                                        <field name="tong_phat_vi_pham"/>
+                                        <field name="luong_thuc_nhan"/>
+                                    </tree>
+                                </field>
+                            </page>
+                        </notebook>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="view_ky_luong_tree" model="ir.ui.view">
+            <field name="name">ky_luong</field>
+            <field name="model">ky_luong</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="name"/>
+                    <field name="thang"/>
+                    <field name="nam"/>
+                    <field name="tu_ngay"/>
+                    <field name="den_ngay"/>
+                    <field name="trang_thai"/>
+                </tree>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="ky_luong_search">
+            <field name="model">ky_luong</field>
+            <field name="arch" type="xml">
+                <search>
+                    <field name="thang"/>
+                    <field name="nam"/>
+                    <field name="trang_thai"/>
+                </search>
+            </field>
+        </record>
+
+        <record id="action_ky_luong" model="ir.actions.act_window">
+            <field name="name">Kỳ lương</field>
+            <field name="res_model">ky_luong</field>
+            <field name="view_mode">tree,form</field>
+            <field name="search_view_id" ref = "ky_luong_search"/>
+        </record>
+
+        <!-- View Bảng lương tháng -->
+        <record id="view_bang_luong_thang_form" model="ir.ui.view">
+            <field name="name">bang_luong_thang</field>
+            <field name="model">bang_luong_thang</field>
+            <field name="arch" type="xml">
+                <form>
+                    <sheet>
+                        <div class="oe_read_only" style="font-size:25px">Bảng lương tháng</div>
+                        <group col="4" string="Thông tin chung">
+                            <field name="ky_luong_id"/>
+                            <field name="nhan_vien_id"/>
+                        </group>
+                        <group col="4" string="Lương cơ bản">
+                            <field name="luong_co_ban_thang"/>
+                            <field name="cong_chuan_thang" readonly="1"/>
+                            <field name="don_gia_ngay" readonly="1"/>
+                            <field name="don_gia_gio" readonly="1"/>
+                        </group>
+                        <group col="4" string="Tổng hợp chấm công">
+                            <field name="tong_gio_lam" readonly="1"/>
+                            <field name="tong_ngay_cong" readonly="1"/>
+                            <field name="tong_gio_ot" readonly="1"/>
+                            <field name="tong_phat_vi_pham" readonly="1"/>
+                        </group>
+                        <group col="4" string="Tính lương">
+                            <div class="o_row">
+                                <span class="o_form_label">Công thức: Lương = Lương cơ bản / 26 × Số công thực tế</span>
+                            </div>
+                            <field name="luong_theo_cong" readonly="1"/>
+                            <field name="luong_ot" readonly="1"/>
+                            <field name="luong_thuc_nhan" readonly="1"/>
+                        </group>
+                        <group col="12" string="Ghi chú">
+                            <field name="ghi_chu" nolabel="1"/>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="view_bang_luong_thang_tree" model="ir.ui.view">
+            <field name="name">bang_luong_thang</field>
+            <field name="model">bang_luong_thang</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="nhan_vien_id"/>
+                    <field name="ky_luong_id"/>
+                    <field name="luong_co_ban_thang"/>
+                    <field name="tong_ngay_cong"/>
+                    <field name="tong_gio_ot"/>
+                    <field name="tong_phat_vi_pham"/>
+                    <field name="luong_ot"/>
+                    <field name="luong_thuc_nhan"/>
+                </tree>
+            </field>
+        </record>
+
+        <!-- Biểu đồ so sánh lương -->
+        <record id="view_bang_luong_thang_graph" model="ir.ui.view">
+            <field name="name">bang_luong_thang.graph</field>
+            <field name="model">bang_luong_thang</field>
+            <field name="arch" type="xml">
+                <graph string="Biểu đồ so sánh lương" type="bar">
+                    <field name="nhan_vien_id" type="row"/>
+                    <field name="luong_co_ban_thang" type="measure"/>
+                    <field name="luong_thuc_nhan" type="measure"/>
+                    <field name="luong_ot" type="measure"/>
+                </graph>
+            </field>
+        </record>
+
+        <!-- Biểu đồ pie -->
+        <record id="view_bang_luong_thang_pie" model="ir.ui.view">
+            <field name="name">bang_luong_thang.pie</field>
+            <field name="model">bang_luong_thang</field>
+            <field name="arch" type="xml">
+                <graph string="Phân bổ lương" type="pie">
+                    <field name="nhan_vien_id" type="row"/>
+                    <field name="luong_thuc_nhan" type="measure"/>
+                </graph>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="bang_luong_thang_search">
+            <field name="model">bang_luong_thang</field>
+            <field name="arch" type="xml">
+                <search>
+                    <field name="nhan_vien_id"/>
+                    <field name="ky_luong_id"/>
+                </search>
+            </field>
+        </record>
+
+        <record id="action_bang_luong_thang" model="ir.actions.act_window">
+            <field name="name">Bảng lương tháng</field>
+            <field name="res_model">bang_luong_thang</field>
+            <field name="view_mode">tree,form,graph</field>
+            <field name="search_view_id" ref = "bang_luong_thang_search"/>
+        </record>
+    </data>
+</odoo>

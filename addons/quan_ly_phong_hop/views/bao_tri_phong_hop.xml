@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!-- Form View -->
+        <record id="view_bao_tri_phong_hop_form" model="ir.ui.view">
+            <field name="name">bao_tri_phong_hop.view.form</field>
+            <field name="model">bao_tri_phong_hop</field>
+            <field name="arch" type="xml">
+                <form string="Bảo trì phòng họp">
+                    <header>
+                        <button name="action_schedule" string="Lên lịch" type="object" class="oe_highlight"
+                                attrs="{'invisible': [('state', '!=', 'draft')]}"/>
+                        <button name="action_start" string="Bắt đầu" type="object"
+                                attrs="{'invisible': [('state', '!=', 'scheduled')]}"/>
+                        <button name="action_done" string="Hoàn thành" type="object" class="oe_highlight"
+                                attrs="{'invisible': [('state', '!=', 'in_progress')]}"/>
+                        <field name="state" widget="statusbar" statusbar_visible="draft,scheduled,in_progress,done"/>
+                    </header>
+                    <sheet>
+                        <!-- Force compute field khi mở form -->
+                        <field name="lich_su_bao_tri_phong_ids" invisible="1"/>
+                        <notebook>
+                            <page string="Thông tin bảo trì">
+                                <group>
+                                    <group string="Thông tin cơ bản">
+                                        <field name="name"/>
+                                        <field name="phong_hop_id" attrs="{'required': True}"/>
+                                        <field name="loai_bao_tri"/>
+                                        <field name="ngay_bao_tri"/>
+                                        <field name="ngay_hoan_thanh" readonly="1"/>
+                                        <field name="state" widget="statusbar" statusbar_visible="draft,scheduled,in_progress,done"/>
+                                    </group>
+                                    <group string="Nhà cung cấp">
+                                        <field name="nha_cung_cap_id"/>
+                                    </group>
+                                </group>
+                                <group>
+                                    <field name="mo_ta" placeholder="Mô tả công việc bảo trì..."/>
+                                </group>
+                            </page>
+                            <page string="Phòng bảo trì">
+                                <group>
+                                    <group string="Thông tin phòng">
+                                        <field name="phong_hop_id" readonly="1"/>
+                                        <field name="phong_hop_id" string="Mã phòng" 
+                                               related="phong_hop_id.ma_phong" readonly="1"/>
+                                        <field name="phong_hop_id" string="Tên phòng" 
+                                               related="phong_hop_id.ten_phong" readonly="1"/>
+                                        <field name="phong_hop_id" string="Loại phòng" 
+                                               related="phong_hop_id.loai_phong" readonly="1"/>
+                                        <field name="phong_hop_id" string="Sức chứa" 
+                                               related="phong_hop_id.suc_chua" readonly="1"/>
+                                        <field name="phong_hop_state" string="Trạng thái phòng" 
+                                               readonly="1" widget="badge"
+                                               decoration-success="phong_hop_state == 'available'"
+                                               decoration-warning="phong_hop_state == 'maintenance'"/>
+                                    </group>
+                                    <group string="Địa điểm">
+                                        <field name="phong_hop_id" string="Địa điểm" 
+                                               related="phong_hop_id.location_id" readonly="1"/>
+                                    </group>
+                                </group>
+                            </page>
+                            <page string="Tài sản bảo trì">
+                                <field name="tai_san_bao_tri_ids" nolabel="1">
+                                    <tree>
+                                        <field name="ma_tai_san"/>
+                                        <field name="ten_tai_san"/>
+                                        <field name="manufacturer"/>
+                                        <field name="model_number"/>
+                                        <field name="state" widget="badge"
+                                               decoration-success="state == 'in_use'"
+                                               decoration-warning="state == 'maintenance'"
+                                               decoration-danger="state == 'damaged'"/>
+                                    </tree>
+                                </field>
+                            </page>
+                            <page string="Chi phí chi tiết">
+                                <group>
+                                    <group string="Chi phí nhân công">
+                                        <field name="chi_phi_nhan_cong"/>
+                                    </group>
+                                    <group string="Chi phí vật tư">
+                                        <field name="chi_phi_vat_tu"/>
+                                    </group>
+                                    <group string="Chi phí thuê ngoài">
+                                        <field name="chi_phi_thue_ngoai"/>
+                                    </group>
+                                </group>
+                                <group>
+                                    <group string="Tổng chi phí">
+                                        <field name="tong_chi_phi" readonly="1"/>
+                                    </group>
+                                </group>
+                            </page>
+                            <page string="Kết quả &amp; Ghi chú">
+                                <group>
+                                    <field name="ket_qua" placeholder="Kết quả bảo trì..."/>
+                                    <field name="ghi_chu" placeholder="Ghi chú bổ sung..."/>
+                                </group>
+                            </page>
+                            <page string="Lịch sử bảo trì phòng">
+                                <field name="lich_su_bao_tri_phong_ids" readonly="1" nolabel="1">
+                                    <tree>
+                                        <field name="name"/>
+                                        <field name="loai_bao_tri"/>
+                                        <field name="ngay_bao_tri"/>
+                                        <field name="ngay_hoan_thanh"/>
+                                        <field name="state" widget="badge"
+                                               decoration-success="state == 'done'"
+                                               decoration-warning="state == 'in_progress'"
+                                               decoration-danger="state == 'cancelled'"/>
+                                        <field name="tong_chi_phi"/>
+                                        <field name="nha_cung_cap_id"/>
+                                    </tree>
+                                </field>
+                            </page>
+                        </notebook>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <!-- Tree View -->
+        <record id="view_bao_tri_phong_hop_tree" model="ir.ui.view">
+            <field name="name">bao_tri_phong_hop.view.tree</field>
+            <field name="model">bao_tri_phong_hop</field>
+            <field name="arch" type="xml">
+                <tree string="Danh sách bảo trì">
+                    <field name="name"/>
+                    <field name="phong_hop_id"/>
+                    <field name="loai_bao_tri"/>
+                    <field name="ngay_bao_tri"/>
+                    <field name="ngay_hoan_thanh"/>
+                    <field name="state"/>
+                    <field name="tong_chi_phi"/>
+                </tree>
+            </field>
+        </record>
+
+        <!-- Action -->
+        <record id="action_bao_tri_phong_hop" model="ir.actions.act_window">
+            <field name="name">Bảo trì phòng họp</field>
+            <field name="res_model">bao_tri_phong_hop</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+    </data>
+</odoo>

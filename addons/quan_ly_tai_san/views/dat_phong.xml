@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!-- Form View -->
+        <record id="view_dat_phong_form" model="ir.ui.view">
+            <field name="name">dat_phong.view.form</field>
+            <field name="model">dat_phong</field>
+            <field name="arch" type="xml">
+                <form string="Đặt phòng">
+                    <sheet>
+                        <group>
+                            <group string="Thông tin chung">
+                                <field name="name" string="Tiêu đề"/>
+                                <field name="tai_san_id" string="Tài sản"/>
+                                <field name="room_id" string="Phòng"/>
+                                <field name="nhan_vien_id" string="Người đặt"/>
+                            </group>
+                            <group string="Thời gian">
+                                <field name="start_datetime" string="Bắt đầu"/>
+                                <field name="end_datetime" string="Kết thúc"/>
+                                <field name="state" widget="statusbar" statusbar_visible="draft,confirmed,in_progress,done"/>
+                            </group>
+                        </group>
+                        <group>
+                            <field name="ghi_chu" placeholder="Ghi chú..."/>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <!-- Tree View -->
+        <record id="view_dat_phong_tree" model="ir.ui.view">
+            <field name="name">dat_phong.view.tree</field>
+            <field name="model">dat_phong</field>
+            <field name="arch" type="xml">
+                <tree string="Danh sách đặt phòng">
+                    <field name="name"/>
+                    <field name="tai_san_id"/>
+                    <field name="room_id"/>
+                    <field name="nhan_vien_id"/>
+                    <field name="start_datetime"/>
+                    <field name="end_datetime"/>
+                    <field name="state"/>
+                </tree>
+            </field>
+        </record>
+
+        <!-- Search View -->
+        <record id="view_dat_phong_search" model="ir.ui.view">
+            <field name="name">dat_phong.view.search</field>
+            <field name="model">dat_phong</field>
+            <field name="arch" type="xml">
+                <search string="Tìm kiếm đặt phòng">
+                    <field name="name"/>
+                    <field name="tai_san_id"/>
+                    <field name="room_id"/>
+                    <field name="nhan_vien_id"/>
+                    <field name="state"/>
+                    <filter string="Đang sử dụng" name="in_progress" domain="[('state', '=', 'in_progress')]"/>
+                    <filter string="Đã xác nhận" name="confirmed" domain="[('state', '=', 'confirmed')]"/>
+                    <filter string="Hoàn thành" name="done" domain="[('state', '=', 'done')]"/>
+                </search>
+            </field>
+        </record>
+
+        <!-- Action -->
+        <record id="dat_phong_action" model="ir.actions.act_window">
+            <field name="name">Đặt phòng</field>
+            <field name="res_model">dat_phong</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+    </data>
+</odoo>

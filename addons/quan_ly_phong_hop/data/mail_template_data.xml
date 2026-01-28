@@ -1,0 +1,222 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+        <!-- Email Template: Booking Created -->
+        <record id="email_template_booking_created" model="mail.template">
+            <field name="name">Booking: Đặt phòng thành công</field>
+            <field name="model_id" ref="model_dat_phong_hop"/>
+            <field name="subject">[${object.ma_booking}] Đặt phòng họp thành công - ${object.name}</field>
+            <field name="email_from">${user.email_formatted}</field>
+            <field name="email_to">nguyenduymilano@gmail.com</field>
+            <field name="partner_to">${object.host_id.partner_id.id if object.host_id.partner_id else False}</field>
+            <field name="body_html" type="html">
+<div style="margin: 0px; padding: 0px; font-family: Arial, sans-serif;">
+    <div style="background-color: #875A7B; color: white; padding: 20px; text-align: center;">
+        <h1 style="margin: 0;">ĐẶT PHÒNG HỌP THÀNH CÔNG</h1>
+    </div>
+    <div style="padding: 20px; background-color: #f9f9f9;">
+        <p style="font-size: 16px; color: #333;">Xin chào,</p>
+        <p style="font-size: 14px; color: #666;">
+            Booking phòng họp của bạn đã được tạo thành công với thông tin sau:
+        </p>
+        
+        <table style="width: 100%; border-collapse: collapse; background-color: white; margin: 20px 0;">
+            <tr>
+                <td style="padding: 10px; border: 1px solid #ddd; font-weight: bold; width: 30%;">Mã booking:</td>
+                <td style="padding: 10px; border: 1px solid #ddd;">${object.ma_booking}</td>
+            </tr>
+            <tr>
+                <td style="padding: 10px; border: 1px solid #ddd; font-weight: bold;">Tên cuộc họp:</td>
+                <td style="padding: 10px; border: 1px solid #ddd;">${object.name}</td>
+            </tr>
+            <tr>
+                <td style="padding: 10px; border: 1px solid #ddd; font-weight: bold;">Phòng họp:</td>
+                <td style="padding: 10px; border: 1px solid #ddd;">${object.phong_hop_id.ten_phong or ''} (${object.phong_hop_id.ma_phong or ''})</td>
+            </tr>
+            <tr>
+                <td style="padding: 10px; border: 1px solid #ddd; font-weight: bold;">Địa điểm:</td>
+                <td style="padding: 10px; border: 1px solid #ddd;">${object.location_id.name or ''}</td>
+            </tr>
+            <tr>
+                <td style="padding: 10px; border: 1px solid #ddd; font-weight: bold;">Thời gian:</td>
+                <td style="padding: 10px; border: 1px solid #ddd;">
+                    ${format_datetime(object.start_datetime, tz=user.tz) or ''} - ${format_datetime(object.end_datetime, tz=user.tz) or ''}
+                </td>
+            </tr>
+            <tr>
+                <td style="padding: 10px; border: 1px solid #ddd; font-weight: bold;">Người chủ trì:</td>
+                <td style="padding: 10px; border: 1px solid #ddd;">${object.host_id.name or ''}</td>
+            </tr>
+            <tr>
+                <td style="padding: 10px; border: 1px solid #ddd; font-weight: bold;">Số người tham dự:</td>
+                <td style="padding: 10px; border: 1px solid #ddd;">${object.so_nguoi_tham_du or 0}</td>
+            </tr>
+            <tr>
+                <td style="padding: 10px; border: 1px solid #ddd; font-weight: bold;">Trạng thái:</td>
+                <td style="padding: 10px; border: 1px solid #ddd;">
+                    <span style="color: #28a745; font-weight: bold;">${dict(object._fields['state'].selection).get(object.state)}</span>
+                </td>
+            </tr>
+        </table>
+        
+        <p style="font-size: 14px; color: #666;">
+            Vui lòng đến đúng giờ và check-in tại phòng họp. Chúc bạn có cuộc họp thành công!
+        </p>
+        
+        <div style="margin-top: 30px; padding-top: 20px; border-top: 1px solid #ddd; text-align: center; color: #999; font-size: 12px;">
+            <p>Email này được gửi tự động từ hệ thống quản lý phòng họp.</p>
+        </div>
+    </div>
+</div>
+            </field>
+        </record>
+
+        <!-- Email Template: Booking Check-in -->
+        <record id="email_template_booking_checkin" model="mail.template">
+            <field name="name">Booking: Check-in phòng họp</field>
+            <field name="model_id" ref="model_dat_phong_hop"/>
+            <field name="subject">[${object.ma_booking}] Đã check-in phòng họp - ${object.name}</field>
+            <field name="email_from">${user.email_formatted}</field>
+            <field name="email_to">nguyenduymilano@gmail.com</field>
+            <field name="partner_to">${object.host_id.partner_id.id if object.host_id.partner_id else False}</field>
+            <field name="body_html" type="html">
+<div style="margin: 0px; padding: 0px; font-family: Arial, sans-serif;">
+    <div style="background-color: #28a745; color: white; padding: 20px; text-align: center;">
+        <h1 style="margin: 0;">ĐÃ CHECK-IN PHÒNG HỌP</h1>
+    </div>
+    <div style="padding: 20px; background-color: #f9f9f9;">
+        <p style="font-size: 16px; color: #333;">Thông báo check-in:</p>
+        <p style="font-size: 14px; color: #666;">
+            Booking <strong>${object.ma_booking}</strong> đã được check-in vào lúc <strong>${format_datetime(object.check_in_time, tz=user.tz) or ''}</strong>.
+        </p>
+        <p style="font-size: 14px; color: #666;">
+            Phòng: <strong>${object.phong_hop_id.ten_phong or ''}</strong><br/>
+            Thời gian: <strong>${format_datetime(object.start_datetime, tz=user.tz) or ''} - ${format_datetime(object.end_datetime, tz=user.tz) or ''}</strong>
+        </p>
+    </div>
+</div>
+            </field>
+        </record>
+
+        <!-- Email Template: Booking Cancelled -->
+        <record id="email_template_booking_cancelled" model="mail.template">
+            <field name="name">Booking: Hủy đặt phòng</field>
+            <field name="model_id" ref="model_dat_phong_hop"/>
+            <field name="subject">[${object.ma_booking}] Đã hủy đặt phòng - ${object.name}</field>
+            <field name="email_from">${user.email_formatted}</field>
+            <field name="email_to">nguyenduymilano@gmail.com</field>
+            <field name="partner_to">${object.host_id.partner_id.id if object.host_id.partner_id else False}</field>
+            <field name="body_html" type="html">
+<div style="margin: 0px; padding: 0px; font-family: Arial, sans-serif;">
+    <div style="background-color: #dc3545; color: white; padding: 20px; text-align: center;">
+        <h1 style="margin: 0;">ĐÃ HỦY ĐẶT PHÒNG</h1>
+    </div>
+    <div style="padding: 20px; background-color: #f9f9f9;">
+        <p style="font-size: 16px; color: #333;">Thông báo hủy booking:</p>
+        <p style="font-size: 14px; color: #666;">
+            Booking <strong>${object.ma_booking}</strong> đã bị hủy.
+        </p>
+        <p style="font-size: 14px; color: #666;">
+            <strong>Lý do:</strong> ${object.ly_do_huy or 'Không có lý do'}
+        </p>
+    </div>
+</div>
+            </field>
+        </record>
+
+        <!-- Email Template: Booking Reminder -->
+        <record id="email_template_booking_reminder" model="mail.template">
+            <field name="name">Booking: Nhắc nhở cuộc họp</field>
+            <field name="model_id" ref="model_dat_phong_hop"/>
+            <field name="subject">[Nhắc nhở] Cuộc họp sắp bắt đầu - ${object.name}</field>
+            <field name="email_from">${user.email_formatted}</field>
+            <field name="email_to">nguyenduymilano@gmail.com</field>
+            <field name="partner_to">${object.host_id.partner_id.id if object.host_id.partner_id else False}</field>
+            <field name="body_html" type="html">
+<div style="margin: 0px; padding: 0px; font-family: Arial, sans-serif;">
+    <div style="background-color: #ffc107; color: #333; padding: 20px; text-align: center;">
+        <h1 style="margin: 0;">NHẮC NHỞ CUỘC HỌP</h1>
+    </div>
+    <div style="padding: 20px; background-color: #f9f9f9;">
+        <p style="font-size: 16px; color: #333;">Xin chào,</p>
+        <p style="font-size: 14px; color: #666;">
+            Bạn có cuộc họp sắp bắt đầu trong vòng 30-60 phút:
+        </p>
+        <table style="width: 100%; border-collapse: collapse; background-color: white; margin: 20px 0;">
+            <tr>
+                <td style="padding: 10px; border: 1px solid #ddd; font-weight: bold;">Tên cuộc họp:</td>
+                <td style="padding: 10px; border: 1px solid #ddd;">${object.name}</td>
+            </tr>
+            <tr>
+                <td style="padding: 10px; border: 1px solid #ddd; font-weight: bold;">Phòng:</td>
+                <td style="padding: 10px; border: 1px solid #ddd;">${object.phong_hop_id.ten_phong or ''}</td>
+            </tr>
+            <tr>
+                <td style="padding: 10px; border: 1px solid #ddd; font-weight: bold;">Thời gian:</td>
+                <td style="padding: 10px; border: 1px solid #ddd;">
+                    <strong style="color: #dc3545;">${format_datetime(object.start_datetime, tz=user.tz) or ''}</strong>
+                </td>
+            </tr>
+        </table>
+        <p style="font-size: 14px; color: #666;">
+            Vui lòng chuẩn bị và đến đúng giờ!
+        </p>
+    </div>
+</div>
+            </field>
+        </record>
+
+        <!-- Email Template: Booking Time Changed -->
+        <record id="email_template_booking_time_changed" model="mail.template">
+            <field name="name">Booking: Thay đổi thời gian</field>
+            <field name="model_id" ref="model_dat_phong_hop"/>
+            <field name="subject">[${object.ma_booking}] Thay đổi thời gian cuộc họp - ${object.name}</field>
+            <field name="email_from">${user.email_formatted}</field>
+            <field name="email_to">nguyenduymilano@gmail.com</field>
+            <field name="partner_to">${object.host_id.partner_id.id if object.host_id.partner_id else False}</field>
+            <field name="body_html" type="html">
+<div style="margin: 0px; padding: 0px; font-family: Arial, sans-serif;">
+    <div style="background-color: #17a2b8; color: white; padding: 20px; text-align: center;">
+        <h1 style="margin: 0;">THAY ĐỔI THỜI GIAN CUỘC HỌP</h1>
+    </div>
+    <div style="padding: 20px; background-color: #f9f9f9;">
+        <p style="font-size: 16px; color: #333;">Thông báo thay đổi:</p>
+        <p style="font-size: 14px; color: #666;">
+            Thời gian cuộc họp <strong>${object.name}</strong> đã được thay đổi:
+        </p>
+        <p style="font-size: 14px; color: #666;">
+            <strong>Thời gian mới:</strong> ${format_datetime(object.start_datetime, tz=user.tz) or ''} - ${format_datetime(object.end_datetime, tz=user.tz) or ''}
+        </p>
+    </div>
+</div>
+            </field>
+        </record>
+
+        <!-- Email Template: Booking Room Changed -->
+        <record id="email_template_booking_room_changed" model="mail.template">
+            <field name="name">Booking: Thay đổi phòng</field>
+            <field name="model_id" ref="model_dat_phong_hop"/>
+            <field name="subject">[${object.ma_booking}] Thay đổi phòng họp - ${object.name}</field>
+            <field name="email_from">${user.email_formatted}</field>
+            <field name="email_to">nguyenduymilano@gmail.com</field>
+            <field name="partner_to">${object.host_id.partner_id.id if object.host_id.partner_id else False}</field>
+            <field name="body_html" type="html">
+<div style="margin: 0px; padding: 0px; font-family: Arial, sans-serif;">
+    <div style="background-color: #17a2b8; color: white; padding: 20px; text-align: center;">
+        <h1 style="margin: 0;">THAY ĐỔI PHÒNG HỌP</h1>
+    </div>
+    <div style="padding: 20px; background-color: #f9f9f9;">
+        <p style="font-size: 16px; color: #333;">Thông báo thay đổi:</p>
+        <p style="font-size: 14px; color: #666;">
+            Phòng họp cho cuộc họp <strong>${object.name}</strong> đã được thay đổi:
+        </p>
+        <p style="font-size: 14px; color: #666;">
+            <strong>Phòng mới:</strong> ${object.phong_hop_id.ten_phong or ''} (${object.phong_hop_id.ma_phong or ''})<br/>
+            <strong>Địa điểm:</strong> ${object.location_id.name or ''}
+        </p>
+    </div>
+</div>
+            </field>
+        </record>
+    </data>
+</odoo>

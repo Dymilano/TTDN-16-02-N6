@@ -1,0 +1,179 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!-- Form View -->
+        <record id="view_phong_hop_form" model="ir.ui.view">
+            <field name="name">phong_hop.view.form</field>
+            <field name="model">phong_hop</field>
+            <field name="arch" type="xml">
+                <form string="Phòng họp">
+                    <header>
+                        <button name="action_schedule_maintenance" string="Lên lịch bảo trì" type="object" class="oe_highlight" 
+                                attrs="{'invisible': [('state', '!=', 'available')]}"/>
+                    </header>
+                    <sheet>
+                        <group>
+                            <group string="Thông tin cơ bản">
+                                <field name="ma_phong"/>
+                                <field name="ten_phong"/>
+                                <field name="loai_phong"/>
+                                <field name="suc_chua"/>
+                                <field name="location_id" 
+                                       options="{'no_create': True}"
+                                       domain="[('location_type', 'in', ['site', 'building', 'floor', 'room'])]"
+                                       help="Chọn địa điểm/tòa/tầng/phòng"/>
+                                <field name="state" widget="statusbar" statusbar_visible="available,maintenance"/>
+                            </group>
+                            <group string="Tiện ích">
+                                <field name="co_may_chieu"/>
+                                <field name="co_tv"/>
+                                <field name="co_vc_device"/>
+                                <field name="co_bang_trang"/>
+                                <field name="co_micro"/>
+                                <field name="co_camera"/>
+                                <field name="co_wifi"/>
+                                <field name="co_aircon"/>
+                                <field name="tien_ich_khac" placeholder="Tiện ích khác..."/>
+                            </group>
+                        </group>
+                        <group>
+                            <group string="Khung giờ hoạt động">
+                                <field name="hoat_dong_ca_ngay"/>
+                                <field name="gio_bat_dau" attrs="{'invisible': [('hoat_dong_ca_ngay', '=', True)]}"/>
+                                <field name="gio_ket_thuc" attrs="{'invisible': [('hoat_dong_ca_ngay', '=', True)]}"/>
+                            </group>
+                            <group string="Quy định đặt phòng">
+                                <field name="thoi_luong_toi_thieu"/>
+                                <field name="thoi_luong_toi_da"/>
+                                <field name="lead_time"/>
+                                <field name="buffer_time_before"/>
+                                <field name="buffer_time_after"/>
+                            </group>
+                        </group>
+                        <group>
+                            <field name="hinh_anh" widget="image" nolabel="1"/>
+                        </group>
+                        <notebook>
+                            <page string="Thống kê">
+                                <group>
+                                    <field name="ty_le_su_dung"/>
+                                    <field name="so_luong_booking"/>
+                                    <field name="so_luong_no_show"/>
+                                </group>
+                            </page>
+                            <page string="Lịch đặt phòng">
+                                <field name="booking_ids" readonly="1">
+                                    <tree>
+                                        <field name="ma_booking"/>
+                                        <field name="name"/>
+                                        <field name="host_id"/>
+                                        <field name="start_datetime"/>
+                                        <field name="end_datetime"/>
+                                        <field name="state"/>
+                                    </tree>
+                                </field>
+                            </page>
+                            <page string="Tài sản trong phòng">
+                                <group>
+                                    <button name="action_add_assets_to_room" string="Thêm tài sản (Wizard)" 
+                                            type="object" class="btn-secondary"
+                                            help="Mở wizard để chọn và thêm tài sản vào phòng"/>
+                                    <button name="action_view_assets_from_module" string="Mở danh sách tài sản" 
+                                            type="object" class="btn-primary"
+                                            help="Mở danh sách tài sản từ module quản lý tài sản để gắn vào phòng"/>
+                                </group>
+                                <field name="tai_san_phong_hop_ids">
+                                    <tree>
+                                        <field name="tai_san_id" options="{'no_create': True}"/>
+                                        <field name="nha_san_xuat"/>
+                                        <field name="model"/>
+                                        <field name="serial_number"/>
+                                        <field name="trang_thai"/>
+                                        <field name="nguoi_chiu_trach_nhiem_id"/>
+                                    </tree>
+                                </field>
+                            </page>
+                            <page string="Lịch sử bảo trì">
+                                <field name="bao_tri_ids" readonly="1">
+                                    <tree>
+                                        <field name="name"/>
+                                        <field name="loai_bao_tri"/>
+                                        <field name="ngay_bao_tri"/>
+                                        <field name="ngay_hoan_thanh"/>
+                                        <field name="state"/>
+                                        <field name="tong_chi_phi"/>
+                                    </tree>
+                                </field>
+                            </page>
+                        </notebook>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <!-- Tree View -->
+        <record id="view_phong_hop_tree" model="ir.ui.view">
+            <field name="name">phong_hop.view.tree</field>
+            <field name="model">phong_hop</field>
+            <field name="arch" type="xml">
+                <tree string="Danh sách phòng họp">
+                    <field name="ma_phong"/>
+                    <field name="ten_phong"/>
+                    <field name="loai_phong"/>
+                    <field name="suc_chua"/>
+                    <field name="location_id" optional="show"/>
+                    <field name="state" widget="badge" decoration-success="state == 'available'" decoration-warning="state == 'maintenance'"/>
+                    <field name="ty_le_su_dung" widget="progressbar" optional="show"/>
+                </tree>
+            </field>
+        </record>
+
+        <!-- Search View -->
+        <record id="view_phong_hop_search" model="ir.ui.view">
+            <field name="name">phong_hop.view.search</field>
+            <field name="model">phong_hop</field>
+            <field name="arch" type="xml">
+                <search string="Tìm kiếm phòng họp">
+                    <field name="ma_phong"/>
+                    <field name="ten_phong"/>
+                    <field name="location_id"/>
+                    <field name="loai_phong"/>
+                    <filter string="Sẵn sàng" name="available" domain="[('state', '=', 'available')]"/>
+                    <filter string="Bảo trì" name="maintenance" domain="[('state', '=', 'maintenance')]"/>
+                    <filter string="Có máy chiếu" name="has_projector" domain="[('co_may_chieu', '=', True)]"/>
+                    <filter string="Có VC" name="has_vc" domain="[('co_vc_device', '=', True)]"/>
+                    <filter string="Đã có đặt phòng" name="has_booking" domain="[('booking_ids', '!=', False)]"/>
+                    <separator/>
+                    <filter string="Theo địa điểm" name="by_location" context="{'group_by': 'location_id'}"/>
+                    <filter string="Theo loại phòng" name="by_type" context="{'group_by': 'loai_phong'}"/>
+                    <filter string="Theo trạng thái" name="by_state" context="{'group_by': 'state'}"/>
+                </search>
+            </field>
+        </record>
+
+        <!-- Action -->
+        <record id="action_phong_hop" model="ir.actions.act_window">
+            <field name="name">Danh sách phòng họp</field>
+            <field name="res_model">phong_hop</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+
+        <!-- Action: Danh sách phòng đã đặt -->
+        <record id="action_phong_hop_da_dat" model="ir.actions.act_window">
+            <field name="name">Phòng đã đặt</field>
+            <field name="res_model">phong_hop</field>
+            <field name="view_mode">tree,form</field>
+            <field name="domain">[('booking_ids', '!=', False)]</field>
+            <field name="context">{'search_default_has_booking': 1}</field>
+        </record>
+
+        <!-- Action: Danh sách phòng đang bảo trì -->
+        <record id="action_phong_hop_dang_bao_tri" model="ir.actions.act_window">
+            <field name="name">Phòng đang bảo trì</field>
+            <field name="res_model">phong_hop</field>
+            <field name="view_mode">tree,form</field>
+            <field name="domain">[('state', '=', 'maintenance')]</field>
+            <field name="context">{'search_default_maintenance': 1}</field>
+        </record>
+    </data>
+</odoo>

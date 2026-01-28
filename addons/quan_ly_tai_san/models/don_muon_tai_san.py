@@ -43,7 +43,15 @@ class DonMuonTaiSan(models.Model):
         ('dang-cho', 'Đang chờ'),
         ('da-duyet', 'Đã duyệt'),
         ('da-huy', 'Đã hủy')
-    ], string='Trạng thái', required=True, default='dang-cho')
+    ], string='Trạng thái', required=True, default='dang-cho', tracking=True)
+
+    def action_duyet(self):
+        """Duyệt đơn mượn"""
+        self.write({'trang_thai': 'da-duyet'})
+
+    def action_huy(self):
+        """Hủy đơn mượn"""
+        self.write({'trang_thai': 'da-huy'})
 
     @api.constrains('thoi_gian_muon')
     def _constrains_thoi_gian_muon_thoi_gian_tra(self):

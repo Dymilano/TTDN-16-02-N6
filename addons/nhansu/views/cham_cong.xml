@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="view_cham_cong_form" model="ir.ui.view">
+            <field name="name">cham_cong</field>
+            <field name="model">cham_cong</field>
+            <field name="arch" type="xml">
+                <form>
+                    <sheet>
+                        <div class="oe_read_only" style="font-size:25px">Chấm công</div>
+                        <group col="4" string="Thông tin chấm công">
+                            <field name="nhan_vien_id"/>
+                            <field name="ngay_cham_cong"/>
+                            <field name="loai_ngay"/>
+                            <field name="gio_vao"/>
+                            <field name="gio_ra"/>
+                            <field name="gio_nghi" readonly="1"/>
+                        </group>
+                        <group col="4" string="Kết quả tính toán">
+                            <field name="so_gio_lam" readonly="1"/>
+                            <field name="so_gio_ot" readonly="1"/>
+                            <field name="ngay_cong" readonly="1"/>
+                            <field name="trang_thai" readonly="1"/>
+                            <field name="tinh_trang_cham_cong" readonly="1"/>
+                            <field name="phut_muon" readonly="1"/>
+                            <field name="phut_som" readonly="1"/>
+                        </group>
+                        <group col="1" string="Giờ chuẩn (cố định)">
+                            <div class="o_row">
+                                <span class="o_form_label">Giờ bắt đầu: 08:30</span>
+                            </div>
+                            <div class="o_row">
+                                <span class="o_form_label">Giờ kết thúc: 17:30</span>
+                            </div>
+                            <div class="o_row">
+                                <span class="o_form_label">Nghỉ trưa: 12:30 - 13:30</span>
+                            </div>
+                            <div class="o_row">
+                                <span class="o_form_label">Sáng: 4 tiếng (08:30-12:30)</span>
+                            </div>
+                            <div class="o_row">
+                                <span class="o_form_label">Chiều: 4 tiếng (13:30-17:30)</span>
+                            </div>
+                            <div class="o_row">
+                                <span class="o_form_label">Tổng: 8 tiếng</span>
+                            </div>
+                        </group>
+                        <notebook>
+                            <page string="Danh sách vi phạm">
+                                <field name="vi_pham_ids">
+                                    <tree>
+                                        <field name="loai_vi_pham"/>
+                                        <field name="muc_do"/>
+                                        <field name="so_phut"/>
+                                        <field name="so_tien_phat"/>
+                                        <field name="mo_ta"/>
+                                    </tree>
+                                </field>
+                            </page>
+                        </notebook>
+                        <group col="12" string="Ghi chú">
+                            <field name="ghi_chu" nolabel="1"/>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="view_cham_cong_tree" model="ir.ui.view">
+            <field name="name">cham_cong</field>
+            <field name="model">cham_cong</field>
+            <field name="arch" type="xml">
+                <tree decoration-success="trang_thai == 'dung_gio'" 
+                      decoration-warning="trang_thai == 'muon_gio'"
+                      decoration-danger="trang_thai == 'vang'">
+                    <field name="nhan_vien_id"/>
+                    <field name="ngay_cham_cong"/>
+                    <field name="gio_vao"/>
+                    <field name="gio_ra"/>
+                    <field name="so_gio_lam"/>
+                    <field name="so_gio_ot"/>
+                    <field name="ngay_cong"/>
+                    <field name="trang_thai"/>
+                    <field name="phut_muon"/>
+                    <field name="phut_som"/>
+                </tree>
+            </field>
+        </record>
+
+        <!-- Biểu đồ chấm công -->
+        <record id="view_cham_cong_graph" model="ir.ui.view">
+            <field name="name">cham_cong.graph</field>
+            <field name="model">cham_cong</field>
+            <field name="arch" type="xml">
+                <graph string="Biểu đồ chấm công" type="bar">
+                    <field name="ngay_cham_cong" type="row"/>
+                    <field name="so_gio_lam" type="measure"/>
+                    <field name="so_gio_ot" type="measure"/>
+                </graph>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="cham_cong_search">
+            <field name="model">cham_cong</field>
+            <field name="arch" type="xml">
+                <search>
+                    <field name="nhan_vien_id"/>
+                    <field name="ngay_cham_cong"/>
+                    <field name="trang_thai"/>
+                    <field name="loai_ngay"/>
+                    <filter string="Vắng" name="vang" domain="[('trang_thai', '=', 'vang')]"/>
+                    <filter string="Đúng giờ" name="dung_gio" domain="[('trang_thai', '=', 'dung_gio')]"/>
+                    <filter string="Muộn giờ" name="muon_gio" domain="[('trang_thai', '=', 'muon_gio')]"/>
+                    <filter string="Có OT" name="co_ot" domain="[('so_gio_ot', '>', 0)]"/>
+                </search>
+            </field>
+        </record>
+
+        <record id="action_cham_cong" model="ir.actions.act_window">
+            <field name="name">Chấm công</field>
+            <field name="res_model">cham_cong</field>
+            <field name="view_mode">tree,form,graph</field>
+            <field name="search_view_id" ref = "cham_cong_search"/>
+        </record>
+    </data>
+</odoo>

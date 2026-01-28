@@ -12,14 +12,35 @@
 							<group string="Thông tin chung">
 								<field name="ma_tai_san" string="Mã tài sản"/>
 								<field name="ten_tai_san" string="Tên tài sản"/>
-								<field name="ngay_mua_ts" string="Ngày mua tài sản"/>
+								<field name="state" string="Trạng thái" widget="statusbar" statusbar_visible="new,in_use,liquidation"/>
+								<field name="location_id" string="Vị trí"/>
 								<field name="danh_muc_ts_id" string="Loại tài sản"/>
-								<field name="trang_thai_thanh_ly" string="Trạng thái thanh lý"/>
+								<field name="ngay_mua_ts" string="Ngày mua tài sản"/>
+								<field name="nha_cung_cap_id" string="Nhà cung cấp"/>
+                                <field name="is_shared_asset"/>
 							</group>
-							<group string="Hình ảnh TS">
+							<group string="Quản lý &amp; Trách nhiệm">
+                                <field name="custodian_id"/>
+                                <field name="department_id"/>
 								<field name="hinh_anh" widget="image" nolabel="1"/>
 							</group>
 						</group>
+                        <group string="Thông tin kỹ thuật">
+                            <group>
+                                <field name="manufacturer"/>
+                                <field name="model_number"/>
+                                <field name="serial_number"/>
+                            </group>
+                            <group>
+                                <field name="gia_tri_ban_dau" string="Giá trị ban đầu"/>
+                                <field name="gia_tri_hien_tai" string="Giá trị hiện tại"/>
+                                <field name="don_vi_tinh" string="Đơn vị tính"/>
+                            </group>
+                            <group string="Mã QR &amp; Truy xuất">
+                                <field name="qr_code" widget="qr_code"/>
+                                <field name="is_shared_asset"/>
+                            </group>
+                        </group>
 						<group>
 							<group string="Phương pháp Khấu hao tự động">
 								<field name="pp_khau_hao"/>
@@ -34,19 +55,9 @@
 									type="object"
 									class="btn-primary w-100 mt-3"/>
 							</group>
-							<group string="Giấy tờ liên quan">
+							<group string="Giấy tờ &amp; Ghi chú">
 								<field name="giay_to_tai_san" filename="giay_to_tai_san_filename" />
-							</group>
-						</group>
-						<group string="Cấu hình tài sản">
-							<group>
-								<field name="gia_tri_ban_dau" string="Giá trị ban đầu"/>
-								<field name="don_vi_tien_te" string="Đơn vị tiền tệ"/>
-							</group>
-							<group>
-								<field name="gia_tri_hien_tai" string="Giá trị hiện tại"/>
-								<field name="don_vi_tinh" string="Đơn vị tính"/>
-								<field name="ghi_chu" string="Ghi chú"/>
+                                <field name="ghi_chu"/>
 							</group>
 						</group>
 						<notebook>
@@ -100,6 +111,17 @@
 										<field name="ngay"/>
 										<field name="noi_dung" string="Tình trạng"/>
 										<field name="ghi_chu" />
+									</tree>
+								</field>
+							</page>
+							<page name="lsdp" string="Lịch sử đặt phòng">
+								<field name="booking_ids" readonly="True">
+									<tree>
+										<field name="name" string="Tiêu đề"/>
+										<field name="room_id" string="Phòng"/>
+										<field name="start_datetime" string="Bắt đầu"/>
+										<field name="end_datetime" string="Kết thúc"/>
+										<field name="state" string="Trạng thái"/>
 									</tree>
 								</field>
 							</page>

@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+        <!-- Cron: Send booking reminders -->
+        <record id="ir_cron_send_booking_reminders" model="ir.cron">
+            <field name="name">Gửi nhắc nhở booking phòng họp</field>
+            <field name="model_id" ref="model_dat_phong_hop"/>
+            <field name="state">code</field>
+            <field name="code">model.cron_send_booking_reminders()</field>
+            <field name="interval_number">30</field>
+            <field name="interval_type">minutes</field>
+            <field name="numbercall">-1</field>
+            <field name="active" eval="True"/>
+        </record>
+
+        <!-- Cron: Check no-show bookings -->
+        <record id="ir_cron_check_no_show" model="ir.cron">
+            <field name="name">Kiểm tra no-show booking</field>
+            <field name="model_id" ref="model_dat_phong_hop"/>
+            <field name="state">code</field>
+            <field name="code">model.cron_check_no_show()</field>
+            <field name="interval_number">15</field>
+            <field name="interval_type">minutes</field>
+            <field name="numbercall">-1</field>
+            <field name="active" eval="True"/>
+        </record>
+    </data>
+</odoo>

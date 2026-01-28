@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="0">
+        <!-- Cleanup: Xóa menu item AI Chatbot nếu còn tồn tại -->
+        <delete model="ir.ui.menu" search="[('name', '=', 'AI Chatbot')]"/>
+        
+        <!-- Cleanup: Xóa action AI Chatbot nếu còn tồn tại -->
+        <delete model="ir.actions.act_window" search="[('res_model', '=', 'ai.chatbot')]"/>
+        
+        <!-- Cleanup: Xóa model data nếu còn tồn tại -->
+        <delete model="ir.model.data" search="[('model', '=', 'ai.chatbot')]"/>
+        
+        <!-- Cleanup: Xóa access rights nếu còn tồn tại -->
+        <delete model="ir.model.access" search="[('model_id.model', '=', 'ai.chatbot')]"/>
+    </data>
+</odoo>

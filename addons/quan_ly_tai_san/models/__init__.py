@@ -1,7 +1,11 @@
-# -*- coding: utf-8 -*-
 from . import danh_muc_tai_san, tai_san, phan_bo_tai_san, lich_su_ky_thuat
 from . import lich_su_khau_hao
 from . import muon_tra_tai_san, muon_tra_tai_san_line, don_muon_tai_san, don_muon_tai_san_line
 from . import thanh_ly_tai_san
 from . import kiem_ke_tai_san_line, kiem_ke_tai_san, luan_chuyen_tai_san_line, luan_chuyen_tai_san
 from . import dashboard
+from . import phieu_su_dung
+from . import bao_tri_tai_san
+from . import mua_sam_tai_san
+from . import location
+from . import dat_phong

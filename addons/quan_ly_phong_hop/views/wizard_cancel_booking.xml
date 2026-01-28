@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="view_wizard_cancel_booking" model="ir.ui.view">
+            <field name="name">wizard.cancel.booking.form</field>
+            <field name="model">wizard.cancel.booking</field>
+            <field name="arch" type="xml">
+                <form string="Hủy đặt phòng">
+                    <group>
+                        <field name="booking_id" readonly="1"/>
+                        <field name="ly_do_huy" placeholder="Nhập lý do hủy..."/>
+                    </group>
+                    <footer>
+                        <button string="Hủy" name="action_cancel" type="object" class="btn-primary"/>
+                        <button string="Đóng" class="btn-secondary" special="cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+    </data>
+</odoo>

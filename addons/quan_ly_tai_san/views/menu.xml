@@ -36,5 +36,22 @@
         <menuitem id="don_muon_tai_san_menu" name="Đơn mượn tài sản" parent="menu_muon_tra_tai_san" action="don_muon_tai_san_action" sequence="1" />
         <menuitem id="muon_tra_tai_san_menu" name="Quản lý mượn trả tài sản" parent="menu_muon_tra_tai_san" action="muon_tra_tai_san_action" sequence="2" />
         <!--  -->
+        
+        <!-- Mua sắm -->
+        <menuitem name="Mua sắm" id="menu_mua_sam_tai_san" parent="menu_root" sequence="6" />
+        <menuitem id="mua_sam_tai_san_menu" name="Phiếu mua sắm" parent="menu_mua_sam_tai_san" action="action_mua_sam_tai_san" sequence="1" />
+        
+        <!-- Sử dụng / Bảo trì -->
+        <menuitem name="Sử dụng &amp; Bảo trì" id="menu_su_dung_bao_tri" parent="menu_root" sequence="7" />
+        <menuitem id="menu_phieu_su_dung" name="Phiếu sử dụng" parent="menu_su_dung_bao_tri" action="action_phieu_su_dung" sequence="1"/>
+        <menuitem id="menu_bao_tri_tai_san" name="Bảo trì" parent="menu_su_dung_bao_tri" action="action_bao_tri_tai_san" sequence="2"/>
+        <menuitem id="menu_dat_phong" name="Đặt phòng" parent="menu_su_dung_bao_tri" action="dat_phong_action" sequence="3"/>
+        
+        <!-- Nhà cung cấp -->
+        <menuitem id="menu_nha_cung_cap" name="Nhà cung cấp" parent="menu_root" action="base.action_partner_form" sequence="8"/>
+
+        <!-- Cấu hình -->
+        <menuitem id="menu_tai_san_config" name="Cấu hình" parent="menu_root" sequence="99"/>
+
 	</data>
 </odoo>

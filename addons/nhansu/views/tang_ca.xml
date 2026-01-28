@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="view_tang_ca_form" model="ir.ui.view">
+            <field name="name">tang_ca</field>
+            <field name="model">tang_ca</field>
+            <field name="arch" type="xml">
+                <form>
+                    <sheet>
+                        <div class="oe_read_only" style="font-size:25px">Tăng ca (OT)</div>
+                        <group col="4" string="Thông tin chung">
+                            <field name="nhan_vien_id" readonly="1"/>
+                            <field name="ngay_tang_ca" readonly="1"/>
+                            <field name="loai_ngay"/>
+                            <field name="so_gio_ot" readonly="1"/>
+                            <field name="he_so_ot" readonly="1"/>
+                        </group>
+                        <group col="4" string="Thời gian OT">
+                            <field name="gio_bat_dau_ot" readonly="1"/>
+                            <field name="gio_ket_thuc_ot" readonly="1"/>
+                            <field name="luong_ot" readonly="1"/>
+                        </group>
+                        <group col="12" string="Ghi chú">
+                            <field name="ghi_chu" nolabel="1"/>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="view_tang_ca_tree" model="ir.ui.view">
+            <field name="name">tang_ca</field>
+            <field name="model">tang_ca</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="nhan_vien_id"/>
+                    <field name="ngay_tang_ca"/>
+                    <field name="so_gio_ot"/>
+                    <field name="loai_ngay"/>
+                    <field name="he_so_ot"/>
+                    <field name="luong_ot"/>
+                </tree>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="tang_ca_search">
+            <field name="model">tang_ca</field>
+            <field name="arch" type="xml">
+                <search>
+                    <field name="nhan_vien_id"/>
+                    <field name="ngay_tang_ca"/>
+                    <field name="loai_ngay"/>
+                </search>
+            </field>
+        </record>
+
+        <record id="action_tang_ca" model="ir.actions.act_window">
+            <field name="name">Tăng ca (OT)</field>
+            <field name="res_model">tang_ca</field>
+            <field name="view_mode">tree,form</field>
+            <field name="search_view_id" ref = "tang_ca_search"/>
+        </record>
+    </data>
+</odoo>
+

@@ -21,7 +21,8 @@
                             </group>
                             <group string="Thông tin thêm">
                                 <field name="ly_do"/>
-                                <field name="trang_thai"
+                                <field name="trang_thai" widget="statusbar" 
+                                    statusbar_visible="dang-cho,da-duyet"
                                     attrs="{'invisible': [('id','=',False)]}"/>
                             </group>
                         </group>

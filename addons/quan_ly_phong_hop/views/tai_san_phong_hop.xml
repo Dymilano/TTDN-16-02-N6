@@ -1,0 +1,262 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!-- Form View -->
+        <record id="view_tai_san_phong_hop_form" model="ir.ui.view">
+            <field name="name">tai_san_phong_hop.view.form</field>
+            <field name="model">tai_san_phong_hop</field>
+            <field name="arch" type="xml">
+                <form string="Tài sản phòng họp">
+                    <header>
+                        <button name="action_view_asset" string="Xem chi tiết tài sản" type="object" 
+                                class="btn-primary"
+                                help="Mở form chi tiết tài sản trong module quản lý tài sản"/>
+                        <button name="action_view_maintenance" string="Lịch sử bảo trì" type="object" 
+                                class="btn-secondary"
+                                help="Xem lịch sử bảo trì của tài sản"/>
+                        <button name="action_create_maintenance" string="Tạo phiếu bảo trì" type="object" 
+                                class="btn-secondary"
+                                help="Tạo phiếu bảo trì mới cho tài sản"/>
+                        <button name="action_view_purchase" string="Phiếu mua sắm" type="object" 
+                                class="btn-secondary"
+                                help="Xem phiếu mua sắm liên quan"/>
+                        <button name="action_view_usage" string="Lịch sử sử dụng" type="object" 
+                                class="btn-secondary"
+                                help="Xem lịch sử sử dụng tài sản"/>
+                        <button name="action_add_asset_from_list" string="Thêm tài sản khác" type="object" 
+                                class="btn-secondary"
+                                help="Thêm tài sản từ danh sách tài sản"/>
+                    </header>
+                    <sheet>
+                        <group>
+                            <group string="Thông tin">
+                                <field name="phong_hop_id"/>
+                                <field name="tai_san_id" options="{'no_create': True}" 
+                                       attrs="{'required': True}"/>
+                                <field name="trang_thai"/>
+                                <field name="trang_thai_tai_san" readonly="1"/>
+                            </group>
+                            <group string="Thông tin kỹ thuật">
+                                <field name="nha_san_xuat" readonly="1"/>
+                                <field name="model" readonly="1"/>
+                                <field name="serial_number" readonly="1"/>
+                            </group>
+                        </group>
+                        <group>
+                            <group string="Trách nhiệm">
+                                <field name="nguoi_chiu_trach_nhiem_id" readonly="1"/>
+                                <field name="phong_ban_quan_ly_id" readonly="1"/>
+                            </group>
+                            <group string="Giấy tờ &amp; Ghi chú">
+                                <field name="giay_to" readonly="1"/>
+                                <field name="ghi_chu" readonly="1"/>
+                            </group>
+                        </group>
+                        <!-- Force compute các fields khi mở form -->
+                        <field name="lich_su_bao_tri_ids" invisible="1"/>
+                        <field name="phieu_bao_tri_ids" invisible="1"/>
+                        <field name="lich_su_su_dung_ids" invisible="1"/>
+                        <field name="phieu_mua_sam_ids" invisible="1"/>
+                        <notebook>
+                            <page string="Chi tiết tài sản">
+                                <group>
+                                    <group string="Thông tin cơ bản">
+                                        <field name="tai_san_id" readonly="1"/>
+                                        <field name="nha_san_xuat" readonly="1"/>
+                                        <field name="model" readonly="1"/>
+                                        <field name="serial_number" readonly="1"/>
+                                        <field name="trang_thai_tai_san" readonly="1"/>
+                                    </group>
+                                    <group string="Thông tin kỹ thuật">
+                                        <field name="nha_san_xuat" readonly="1"/>
+                                        <field name="model" readonly="1"/>
+                                        <field name="serial_number" readonly="1"/>
+                                    </group>
+                                </group>
+                                <group>
+                                    <group string="Trách nhiệm">
+                                        <field name="nguoi_chiu_trach_nhiem_id" readonly="1"/>
+                                        <field name="phong_ban_quan_ly_id" readonly="1"/>
+                                    </group>
+                                    <group string="Giấy tờ &amp; Ghi chú">
+                                        <field name="giay_to" readonly="1"/>
+                                        <field name="ghi_chu" readonly="1"/>
+                                    </group>
+                                </group>
+                                <div class="oe_button_box" name="button_box">
+                                    <button name="action_view_asset" string="Xem chi tiết đầy đủ" type="object" 
+                                            class="oe_stat_button" icon="fa-external-link"
+                                            help="Mở form chi tiết tài sản trong module quản lý tài sản"/>
+                                </div>
+                            </page>
+                            <page string="Tài sản phòng">
+                                <group>
+                                    <group string="Thông tin tài sản">
+                                        <field name="tai_san_id" readonly="1"/>
+                                        <field name="nha_san_xuat" readonly="1"/>
+                                        <field name="model" readonly="1"/>
+                                        <field name="serial_number" readonly="1"/>
+                                    </group>
+                                    <group string="Trạng thái">
+                                        <field name="trang_thai"/>
+                                        <field name="trang_thai_tai_san" readonly="1"/>
+                                    </group>
+                                </group>
+                            </page>
+                            <page string="Tạo phiếu bảo trì">
+                                <div class="alert alert-info" role="alert">
+                                    <p><strong>Hướng dẫn:</strong></p>
+                                    <p>Để tạo phiếu bảo trì cho tài sản này:</p>
+                                    <ol>
+                                        <li>Nhấn nút "Tạo phiếu bảo trì" ở header</li>
+                                        <li>Hoặc vào menu "Bảo trì phòng" → Tạo mới</li>
+                                        <li>Chọn tài sản này trong danh sách tài sản cần bảo trì</li>
+                                    </ol>
+                                </div>
+                                <group>
+                                    <field name="tai_san_id" readonly="1"/>
+                                    <field name="phong_hop_id" readonly="1"/>
+                                    <button name="action_create_maintenance" string="Tạo phiếu bảo trì mới" 
+                                            type="object" class="btn-primary"
+                                            help="Tạo phiếu bảo trì mới cho tài sản này"/>
+                                </group>
+                            </page>
+                            <page string="Lịch sử bảo trì">
+                                <field name="lich_su_bao_tri_ids" readonly="1" nolabel="1">
+                                    <tree>
+                                        <field name="name"/>
+                                        <field name="loai_bao_tri"/>
+                                        <field name="ngay_bao_tri"/>
+                                        <field name="ngay_hoan_thanh"/>
+                                        <field name="state"/>
+                                        <field name="tong_chi_phi"/>
+                                        <field name="nha_cung_cap_id"/>
+                                    </tree>
+                                </field>
+                            </page>
+                            <page string="Phiếu bảo trì">
+                                <field name="phieu_bao_tri_ids" readonly="1" nolabel="1">
+                                    <tree>
+                                        <field name="name"/>
+                                        <field name="loai_bao_tri"/>
+                                        <field name="ngay_bao_tri"/>
+                                        <field name="state" widget="badge" 
+                                               decoration-success="state == 'done'"
+                                               decoration-warning="state == 'in_progress'"
+                                               decoration-danger="state == 'cancelled'"/>
+                                        <field name="chi_phi_nhan_cong"/>
+                                        <field name="chi_phi_vat_tu"/>
+                                        <field name="chi_phi_thue_ngoai"/>
+                                        <field name="tong_chi_phi"/>
+                                        <field name="nha_cung_cap_id"/>
+                                    </tree>
+                                    <form>
+                                        <sheet>
+                                            <group>
+                                                <group string="Thông tin">
+                                                    <field name="name"/>
+                                                    <field name="tai_san_id"/>
+                                                    <field name="loai_bao_tri"/>
+                                                    <field name="state" widget="statusbar" statusbar_visible="draft,in_progress,done"/>
+                                                </group>
+                                                <group string="Thời gian">
+                                                    <field name="ngay_bao_tri"/>
+                                                    <field name="ngay_hoan_thanh"/>
+                                                    <field name="thoi_gian_dung_may"/>
+                                                </group>
+                                            </group>
+                                            <group>
+                                                <group string="Chi phí">
+                                                    <field name="chi_phi_nhan_cong"/>
+                                                    <field name="chi_phi_vat_tu"/>
+                                                    <field name="chi_phi_thue_ngoai"/>
+                                                    <field name="tong_chi_phi"/>
+                                                </group>
+                                                <group string="Nhà cung cấp">
+                                                    <field name="nha_cung_cap_id"/>
+                                                </group>
+                                            </group>
+                                            <group>
+                                                <field name="mo_ta"/>
+                                                <field name="nguyen_nhan"/>
+                                                <field name="ket_qua"/>
+                                            </group>
+                                        </sheet>
+                                    </form>
+                                </field>
+                            </page>
+                            <page string="Lịch sử sử dụng">
+                                <field name="lich_su_su_dung_ids" readonly="1" nolabel="1">
+                                    <tree>
+                                        <field name="phieu_su_dung_id"/>
+                                        <field name="tai_san_id" invisible="1"/>
+                                        <field name="phieu_su_dung_id" invisible="1" context="{'show_name': True}"/>
+                                        <field name="phieu_su_dung_id" string="Ngày sử dụng" 
+                                               related="phieu_su_dung_id.ngay_su_dung" readonly="1"/>
+                                        <field name="phieu_su_dung_id" string="Nhân viên" 
+                                               related="phieu_su_dung_id.nhan_vien_id" readonly="1"/>
+                                        <field name="phieu_su_dung_id" string="Bộ phận" 
+                                               related="phieu_su_dung_id.bo_phan_id" readonly="1"/>
+                                        <field name="phieu_su_dung_id" string="Trạng thái" 
+                                               related="phieu_su_dung_id.state" readonly="1"/>
+                                        <field name="ghi_chu"/>
+                                    </tree>
+                                </field>
+                            </page>
+                            <page string="Phiếu mua sắm">
+                                <field name="phieu_mua_sam_ids" readonly="1" nolabel="1">
+                                    <tree>
+                                        <field name="name"/>
+                                        <field name="ngay_mua"/>
+                                        <field name="nha_cung_cap_id"/>
+                                        <field name="total_amount"/>
+                                        <field name="state"/>
+                                    </tree>
+                                </field>
+                            </page>
+                            <page string="Thêm tài sản khác">
+                                <div class="alert alert-info" role="alert">
+                                    <p><strong>Hướng dẫn:</strong></p>
+                                    <p>Để thêm tài sản khác vào phòng này, vui lòng:</p>
+                                    <ol>
+                                        <li>Nhấn nút "Thêm tài sản khác" ở header</li>
+                                        <li>Hoặc vào menu "Tài sản phòng" → Tạo mới</li>
+                                        <li>Chọn phòng và tài sản từ danh sách</li>
+                                    </ol>
+                                </div>
+                                <group>
+                                    <field name="phong_hop_id" readonly="1"/>
+                                    <button name="action_add_asset_from_list" string="Thêm tài sản từ danh sách" 
+                                            type="object" class="btn-primary"
+                                            help="Mở wizard để chọn và thêm tài sản vào phòng"/>
+                                </group>
+                            </page>
+                        </notebook>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <!-- Tree View -->
+        <record id="view_tai_san_phong_hop_tree" model="ir.ui.view">
+            <field name="name">tai_san_phong_hop.view.tree</field>
+            <field name="model">tai_san_phong_hop</field>
+            <field name="arch" type="xml">
+                <tree string="Danh sách tài sản phòng họp">
+                    <field name="phong_hop_id"/>
+                    <field name="tai_san_id"/>
+                    <field name="nha_san_xuat"/>
+                    <field name="model"/>
+                    <field name="trang_thai"/>
+                </tree>
+            </field>
+        </record>
+
+        <!-- Action -->
+        <record id="action_tai_san_phong_hop" model="ir.actions.act_window">
+            <field name="name">Tài sản phòng họp</field>
+            <field name="res_model">tai_san_phong_hop</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+    </data>
+</odoo>

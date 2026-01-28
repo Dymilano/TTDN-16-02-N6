@@ -1,0 +1,12 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_phong_hop_all,phong_hop.all,model_phong_hop,base.group_user,1,1,1,1
+access_dat_phong_hop_all,dat_phong_hop.all,model_dat_phong_hop,base.group_user,1,1,1,1
+access_dich_vu_phong_hop_all,dich_vu_phong_hop.all,model_dich_vu_phong_hop,base.group_user,1,1,1,1
+access_bao_tri_phong_hop_all,bao_tri_phong_hop.all,model_bao_tri_phong_hop,base.group_user,1,1,1,1
+access_tai_san_phong_hop_all,tai_san_phong_hop.all,model_tai_san_phong_hop,base.group_user,1,1,1,1
+access_dashboard_phong_hop_all,dashboard_phong_hop.all,model_dashboard_phong_hop,base.group_user,1,0,0,0
+access_wizard_reject_booking_all,wizard.reject.booking.all,model_wizard_reject_booking,base.group_user,1,1,1,1
+access_wizard_cancel_booking_all,wizard.cancel.booking.all,model_wizard_cancel_booking,base.group_user,1,1,1,1
+access_wizard_add_assets_all,wizard.add.assets.to.room.all,model_wizard_add_assets_to_room,base.group_user,1,1,1,1
+access_wizard_multi_room_booking_all,wizard.multi.room.booking.all,model_wizard_multi_room_booking,base.group_user,1,1,1,1
+access_wizard_extend_booking_all,wizard.extend.booking.all,model_wizard_extend_booking,base.group_user,1,1,1,1

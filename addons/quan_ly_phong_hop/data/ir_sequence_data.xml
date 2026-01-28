@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+        <!-- Sequence for Phòng họp -->
+        <record id="seq_phong_hop" model="ir.sequence">
+            <field name="name">Mã phòng họp</field>
+            <field name="code">phong.hop</field>
+            <field name="prefix">PH</field>
+            <field name="padding">4</field>
+            <field name="company_id" eval="False"/>
+        </record>
+        
+        <!-- Sequence for Đặt phòng họp -->
+        <record id="seq_dat_phong_hop" model="ir.sequence">
+            <field name="name">Mã đặt phòng họp</field>
+            <field name="code">dat.phong.hop</field>
+            <field name="prefix">BK</field>
+            <field name="padding">6</field>
+            <field name="company_id" eval="False"/>
+        </record>
+        
+        <!-- Sequence for Bảo trì phòng họp -->
+        <record id="seq_bao_tri_phong_hop" model="ir.sequence">
+            <field name="name">Mã bảo trì phòng họp</field>
+            <field name="code">bao.tri.phong.hop</field>
+            <field name="prefix">BT-PH</field>
+            <field name="padding">5</field>
+            <field name="company_id" eval="False"/>
+        </record>
+    </data>
+</odoo>

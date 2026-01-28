@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="view_chuc_vu_form" model="ir.ui.view">
+            <field name="name">chuc_vu</field>
+            <field name="model">chuc_vu</field>
+            <field name="arch" type="xml">
+                <form>
+                    <sheet>
+                        <div class="oe_read_only" style="font-size:25px">Chức vụ</div>
+                        <group col="4" string="Thông tin chung">
+                            <field name="ma_chuc_vu"/>
+                            <field name="ten_chuc_vu"/>
+                            <field name="cap_bac"/>
+                            <field name="so_nhan_vien" readonly="1"/>
+                        </group>
+                        <group col="4" string="Thông tin lương (tham khảo)">
+                            <field name="luong_toi_thieu"/>
+                            <field name="luong_toi_da"/>
+                        </group>
+                        <group col="12" string="Mô tả">
+                            <field name="mo_ta" nolabel="1"/>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="view_chuc_vu_tree" model="ir.ui.view">
+            <field name="name">chuc_vu</field>
+            <field name="model">chuc_vu</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="ma_chuc_vu"/>
+                    <field name="ten_chuc_vu"/>
+                    <field name="cap_bac"/>
+                    <field name="so_nhan_vien"/>
+                </tree>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="chuc_vu_search">
+            <field name="model">chuc_vu</field>
+            <field name="arch" type="xml">
+                <search>
+                    <field name="ma_chuc_vu"/>
+                    <field name="ten_chuc_vu"/>
+                    <field name="cap_bac"/>
+                </search>
+            </field>
+        </record>
+
+        <record id="action_chuc_vu" model="ir.actions.act_window">
+            <field name="name">Chức vụ</field>
+            <field name="res_model">chuc_vu</field>
+            <field name="view_mode">tree,form</field>
+            <field name="search_view_id" ref = "chuc_vu_search"/>
+        </record>
+    </data>
+</odoo>
+    

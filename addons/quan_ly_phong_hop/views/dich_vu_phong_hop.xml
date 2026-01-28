@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!-- Form View -->
+        <record id="view_dich_vu_phong_hop_form" model="ir.ui.view">
+            <field name="name">dich_vu_phong_hop.view.form</field>
+            <field name="model">dich_vu_phong_hop</field>
+            <field name="arch" type="xml">
+                <form string="Dịch vụ phòng họp">
+                    <sheet>
+                        <group>
+                            <field name="booking_id"/>
+                            <field name="loai_dich_vu"/>
+                            <field name="state"/>
+                        </group>
+                        <group attrs="{'invisible': [('loai_dich_vu', '!=', 'setup')]}">
+                            <field name="layout_type"/>
+                            <field name="so_ghe"/>
+                        </group>
+                        <group attrs="{'invisible': [('loai_dich_vu', '!=', 'catering')]}">
+                            <field name="so_luong_nguoi"/>
+                            <field name="menu"/>
+                            <field name="thoi_diem_phuc_vu"/>
+                        </group>
+                        <group attrs="{'invisible': [('loai_dich_vu', '!=', 'it_support')]}">
+                            <field name="yeu_cau_hoi_online"/>
+                            <field name="can_test_mic_cam"/>
+                        </group>
+                        <group attrs="{'invisible': [('loai_dich_vu', '!=', 'housekeeping')]}">
+                            <field name="don_truoc"/>
+                            <field name="don_sau"/>
+                        </group>
+                        <group attrs="{'invisible': [('loai_dich_vu', '!=', 'equipment')]}">
+                            <field name="thiet_bi_muon_ids" widget="many2many_tags"/>
+                        </group>
+                        <group>
+                            <field name="chi_phi"/>
+                            <field name="mo_ta"/>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+    </data>
+</odoo>

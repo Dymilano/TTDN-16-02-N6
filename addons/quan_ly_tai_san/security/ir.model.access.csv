@@ -14,3 +14,10 @@ access_don_muon_tai_san_all,don_muon_tai_san.all,model_don_muon_tai_san,,1,1,1,1
 access_don_muon_tai_san_line_all,don_muon_tai_san_line.all,model_don_muon_tai_san_line,,1,1,1,1
 access_asset_dashboard_all,asset.dashboard.all,model_asset_dashboard,,1,0,0,0
 access_lich_su_ky_thuat_all,lich_su_ky_thuat.all,model_lich_su_ky_thuat,,1,1,1,1
+access_phieu_su_dung_all,phieu_su_dung.all,model_phieu_su_dung,,1,1,1,1
+access_phieu_su_dung_line_all,phieu_su_dung.line.all,model_phieu_su_dung_line,,1,1,1,1
+access_bao_tri_tai_san_all,bao_tri_tai_san.all,model_bao_tri_tai_san,,1,1,1,1
+access_mua_sam_tai_san_all,mua_sam_tai_san.all,model_mua_sam_tai_san,,1,1,1,1
+access_mua_sam_tai_san_line_all,mua_sam_tai_san.line.all,model_mua_sam_tai_san_line,,1,1,1,1
+access_tai_san_location_all,tai_san.location.all,model_tai_san_location,,1,1,1,1
+access_dat_phong_all,dat_phong.all,model_dat_phong,,1,1,1,1

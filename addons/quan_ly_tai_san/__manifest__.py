@@ -17,14 +17,15 @@
     # Check https://github.com/odoo/odoo/blob/15.0/odoo/addons/base/data/ir_module_category_data.xml
     # for the full list
     'category': 'Human Resources',
-    'version': '0.1',
+    'version': '0.4',
 
     # any module necessary for this one to work correctly
-    'depends': ['base', 'web'],
+    'depends': ['base', 'web', 'nhansu', 'mail'],
 
     # always loaded
     'data': [
         'security/ir.model.access.csv',
+        'data/mail_template_data.xml',
         'views/danh_muc_tai_san.xml',
         'views/kiem_ke_tai_san.xml',
         'views/lich_su_khau_hao.xml',
@@ -36,7 +37,12 @@
         'views/thanh_ly_tai_san.xml',
         'views/dashboard_overview.xml',
         'views/dashboard_borrowing.xml',
+        'views/phieu_su_dung.xml',
+        'views/bao_tri_tai_san.xml',
+        'views/mua_sam_tai_san.xml',
+        'views/dat_phong.xml',
         'views/menu.xml',
+        'views/location_views.xml',
     ],
     # only loaded in demonstration mode
     'demo': [

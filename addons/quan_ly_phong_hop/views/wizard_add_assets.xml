@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="view_wizard_add_assets" model="ir.ui.view">
+            <field name="name">wizard.add.assets.form</field>
+            <field name="model">wizard.add.assets.to.room</field>
+            <field name="arch" type="xml">
+                <form string="Thêm tài sản vào phòng">
+                    <sheet>
+                        <group>
+                            <field name="phong_hop_id" readonly="1"/>
+                            <field name="tai_san_ids" widget="many2many_tags" 
+                                   domain="[('is_shared_asset', '=', True)]"
+                                   options="{'no_create': True}"
+                                   placeholder="Chọn tài sản cần thêm vào phòng..."/>
+                        </group>
+                    </sheet>
+                    <footer>
+                        <button string="Thêm" name="action_add_assets" type="object" class="btn-primary"/>
+                        <button string="Hủy" class="btn-secondary" special="cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+    </data>
+</odoo>

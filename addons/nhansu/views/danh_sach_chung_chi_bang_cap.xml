@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="view_danh_sach_chung_chi_bang_cap_form" model="ir.ui.view">
+            <field name="name">danh_sach_chung_chi_bang_cap</field>
+            <field name="model">danh_sach_chung_chi_bang_cap</field>
+            <field name="arch" type="xml">
+                <form>
+                    <sheet>
+                        <div class="oe_read_only" style="font-size:25px">Danh sách chứng chỉ, bằng cấp</div>
+                        <group col="4" string="Thông tin nhân viên">
+                            <field name="nhan_vien_id"/>
+                            <field name="ma_dinh_danh" readonly="1"/>
+                            <field name="ho_va_ten" readonly="1"/>
+                        </group>
+                        <group col="4" string="Thông tin chứng chỉ">
+                            <field name="chung_chi_bang_cap_id"/>
+                            <field name="ngay_cap"/>
+                            <field name="ngay_het_han"/>
+                            <field name="trang_thai" readonly="1"/>
+                            <field name="so_seri"/>
+                            <field name="co_quan_cap"/>
+                        </group>
+                        <group col="12" string="Ghi chú">
+                            <field name="ghi_chu" nolabel="1"/>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="view_danh_sach_chung_chi_bang_cap_tree" model="ir.ui.view">
+            <field name="name">danh_sach_chung_chi_bang_cap</field>
+            <field name="model">danh_sach_chung_chi_bang_cap</field>
+            <field name="arch" type="xml">
+                <tree decoration-success="trang_thai == 'con_han'" decoration-warning="trang_thai == 'sap_het_han'" decoration-danger="trang_thai == 'het_han'">
+                    <field name="nhan_vien_id"/>
+                    <field name="ho_va_ten"/>
+                    <field name="chung_chi_bang_cap_id"/>
+                    <field name="ngay_cap"/>
+                    <field name="ngay_het_han"/>
+                    <field name="trang_thai"/>
+                </tree>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="danh_sach_chung_chi_bang_cap_search">
+            <field name="model">danh_sach_chung_chi_bang_cap</field>
+            <field name="arch" type="xml">
+                <search>
+                    <field name="nhan_vien_id"/>
+                    <field name="ho_va_ten"/>
+                    <field name="chung_chi_bang_cap_id"/>
+                    <field name="trang_thai"/>
+                    <filter string="Còn hạn" name="con_han" domain="[('trang_thai', '=', 'con_han')]"/>
+                    <filter string="Sắp hết hạn" name="sap_het_han" domain="[('trang_thai', '=', 'sap_het_han')]"/>
+                    <filter string="Hết hạn" name="het_han" domain="[('trang_thai', '=', 'het_han')]"/>
+                </search>
+            </field>
+        </record>
+
+        <record id="action_danh_sach_chung_chi_bang_cap" model="ir.actions.act_window">
+            <field name="name">Danh sách chứng chỉ bằng cấp</field>
+            <field name="res_model">danh_sach_chung_chi_bang_cap</field>
+            <field name="view_mode">tree,form</field>
+            <field name="search_view_id" ref = "danh_sach_chung_chi_bang_cap_search"/>
+        </record>
+    </data>
+</odoo>
+    

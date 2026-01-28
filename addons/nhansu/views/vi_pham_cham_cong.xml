@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="view_vi_pham_cham_cong_form" model="ir.ui.view">
+            <field name="name">vi_pham_cham_cong</field>
+            <field name="model">vi_pham_cham_cong</field>
+            <field name="arch" type="xml">
+                <form>
+                    <sheet>
+                        <div class="oe_read_only" style="font-size:25px">Vi phạm chấm công</div>
+                        <group col="4" string="Thông tin chung">
+                            <field name="cham_cong_id"/>
+                            <field name="nhan_vien_id" readonly="1"/>
+                            <field name="ngay_vi_pham" readonly="1"/>
+                            <field name="loai_vi_pham"/>
+                            <field name="muc_do"/>
+                        </group>
+                        <group col="4" string="Chi tiết vi phạm">
+                            <field name="so_phut"/>
+                            <field name="so_tien_phat"/>
+                        </group>
+                        <group col="12" string="Mô tả">
+                            <field name="mo_ta" nolabel="1"/>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="view_vi_pham_cham_cong_tree" model="ir.ui.view">
+            <field name="name">vi_pham_cham_cong</field>
+            <field name="model">vi_pham_cham_cong</field>
+            <field name="arch" type="xml">
+                <tree decoration-warning="muc_do == 'nhe'" 
+                      decoration-muted="muc_do == 'vua'"
+                      decoration-danger="muc_do == 'nang'">
+                    <field name="nhan_vien_id"/>
+                    <field name="ngay_vi_pham"/>
+                    <field name="loai_vi_pham"/>
+                    <field name="muc_do"/>
+                    <field name="so_phut"/>
+                    <field name="so_tien_phat"/>
+                </tree>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="vi_pham_cham_cong_search">
+            <field name="model">vi_pham_cham_cong</field>
+            <field name="arch" type="xml">
+                <search>
+                    <field name="nhan_vien_id"/>
+                    <field name="ngay_vi_pham"/>
+                    <field name="loai_vi_pham"/>
+                    <field name="muc_do"/>
+                    <filter string="Muộn giờ" name="muon_gio" domain="[('loai_vi_pham', '=', 'muon_gio')]"/>
+                    <filter string="Về sớm" name="som_ve" domain="[('loai_vi_pham', '=', 'som_ve')]"/>
+                    <filter string="Thiếu giờ" name="thieu_gio" domain="[('loai_vi_pham', '=', 'thieu_gio')]"/>
+                </search>
+            </field>
+        </record>
+
+        <record id="action_vi_pham_cham_cong" model="ir.actions.act_window">
+            <field name="name">Vi phạm chấm công</field>
+            <field name="res_model">vi_pham_cham_cong</field>
+            <field name="view_mode">tree,form</field>
+            <field name="search_view_id" ref = "vi_pham_cham_cong_search"/>
+        </record>
+    </data>
+</odoo>
+

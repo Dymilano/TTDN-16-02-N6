@@ -1,9 +1,8 @@
 from odoo import api, fields, models
 
-class AssetDashboard(models.Model):
+class AssetDashboard(models.TransientModel):
     _name = 'asset.dashboard'
     _description = 'Dashboard for Asset Management'
-    _auto = False
 
     @api.model
     def name_get(self):
@@ -12,16 +11,36 @@ class AssetDashboard(models.Model):
     @api.model
     def get_overview_data(self):
         """Dashboard Tổng Quan"""
-        # Tổng số tài sản
-        total_assets = self.env['tai_san'].search_count([])
-        in_use_assets = self.env['tai_san'].search_count([('phong_ban_su_dung_ids.trang_thai', '=', 'in-use')])
-        not_used_assets = self.env['tai_san'].search_count([('phong_ban_su_dung_ids.trang_thai', '=', 'not-in-use')])
-        disposed_assets = self.env['tai_san'].search_count([('trang_thai_thanh_ly', '=', 'da_thanh_ly')])
+        try:
+            # Tổng số tài sản
+            total_assets = self.env['tai_san'].search_count([])
+            in_use_assets = self.env['tai_san'].search_count([('phong_ban_su_dung_ids.trang_thai', '=', 'in-use')])
+            not_used_assets = self.env['tai_san'].search_count([('phong_ban_su_dung_ids.trang_thai', '=', 'not-in-use')])
+            disposed_assets = self.env['tai_san'].search_count([('trang_thai_thanh_ly', '=', 'da_thanh_ly')])
+        except Exception:
+            total_assets = 0
+            in_use_assets = 0
+            not_used_assets = 0
+            disposed_assets = 0
         
-        # Tổng giá trị tài sản
-        assets = self.env['tai_san'].search([])
-        total_original_value = sum(assets.mapped('gia_tri_ban_dau'))
-        total_current_value = sum(assets.mapped('gia_tri_hien_tai'))
+        # Tổng giá trị tài sản - đọc từng field riêng để tránh lỗi
+        total_original_value = 0
+        total_current_value = 0
+        try:
+            # Đọc trực tiếp từ database để tránh lỗi khi có field mới chưa được tạo
+            self.env.cr.execute("""
+                SELECT COALESCE(SUM(gia_tri_ban_dau), 0) as total_original,
+                       COALESCE(SUM(gia_tri_hien_tai), 0) as total_current
+                FROM tai_san
+            """)
+            result = self.env.cr.fetchone()
+            if result:
+                total_original_value = result[0] or 0
+                total_current_value = result[1] or 0
+        except Exception:
+            # Nếu có lỗi (ví dụ column chưa tồn tại), set giá trị mặc định
+            total_original_value = 0
+            total_current_value = 0
         
         # Số lượng tài sản theo loại
         asset_types = self.env['danh_muc_tai_san'].search([])

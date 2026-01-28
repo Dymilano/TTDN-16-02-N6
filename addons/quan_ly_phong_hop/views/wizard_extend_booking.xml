@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="view_wizard_extend_booking" model="ir.ui.view">
+            <field name="name">wizard.extend.booking.form</field>
+            <field name="model">wizard.extend.booking</field>
+            <field name="arch" type="xml">
+                <form string="Gia hạn booking">
+                    <group>
+                        <field name="booking_id" readonly="1"/>
+                        <field name="new_end_datetime" 
+                               attrs="{'required': True}"/>
+                        <field name="max_end_time" readonly="1" 
+                               attrs="{'invisible': [('max_end_time', '=', False)]}"
+                               help="Thời gian tối đa có thể gia hạn (do có booking sau)"/>
+                        <field name="ly_do_gia_han" placeholder="Nhập lý do gia hạn..."/>
+                    </group>
+                    <footer>
+                        <button string="Gia hạn" name="action_extend" type="object" class="btn-primary"/>
+                        <button string="Đóng" class="btn-secondary" special="cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+    </data>
+</odoo>

@@ -1,0 +1,222 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!-- Form View -->
+        <record id="view_dat_phong_hop_form" model="ir.ui.view">
+            <field name="name">dat_phong_hop.view.form</field>
+            <field name="model">dat_phong_hop</field>
+            <field name="arch" type="xml">
+                <form string="Đặt phòng họp">
+                    <header>
+                        <button name="action_submit" string="Gửi yêu cầu" type="object" class="oe_highlight" 
+                                attrs="{'invisible': [('state', '!=', 'draft')]}"/>
+                        <button name="action_approve" string="Duyệt" type="object" class="oe_highlight"
+                                attrs="{'invisible': [('state', '!=', 'pending_approval')]}"/>
+                        <button name="action_reject" string="Từ chối" type="object"
+                                attrs="{'invisible': [('state', '!=', 'pending_approval')]}"/>
+                        <button name="action_check_in" string="Check-in" type="object" class="oe_highlight"
+                                attrs="{'invisible': [('state', 'not in', ['approved', 'confirmed'])]}"/>
+                        <button name="action_start" string="Bắt đầu" type="object"
+                                attrs="{'invisible': [('state', '!=', 'checked_in')]}"/>
+                        <button name="action_check_out" string="Check-out" type="object" class="oe_highlight"
+                                attrs="{'invisible': [('state', '!=', 'in_progress')]}"/>
+                        <button name="action_cancel" string="Hủy" type="object"
+                                attrs="{'invisible': [('state', 'in', ['done', 'cancelled', 'no_show'])]}"/>
+                        <button name="action_create_multi_room_booking" string="Đặt nhiều phòng" type="object" 
+                                class="btn-secondary"
+                                attrs="{'invisible': [('state', '!=', 'draft')]}"
+                                help="Đặt nhiều phòng cho cùng một sự kiện"/>
+                        <button name="action_extend_booking" string="Gia hạn" type="object" 
+                                class="btn-secondary"
+                                attrs="{'invisible': [('state', 'not in', ['checked_in', 'in_progress'])]}"
+                                help="Gia hạn thời gian booking nếu không có booking sau"/>
+                        <field name="state" widget="statusbar" statusbar_visible="draft,pending_approval,approved,checked_in,in_progress,done"/>
+                    </header>
+                    <sheet>
+                        <group>
+                            <group string="Thông tin cuộc họp">
+                                <field name="ma_booking"/>
+                                <field name="name"/>
+                                <field name="phong_hop_id" options="{'no_create': True}"/>
+                                <button name="action_suggest_rooms" string="Gợi ý phòng phù hợp" type="object" 
+                                        class="btn-secondary" 
+                                        attrs="{'invisible': [('state', '!=', 'draft')]}"
+                                        help="Gợi ý phòng phù hợp dựa trên thời gian, số người và thiết bị cần thiết"/>
+                                <field name="location_id" readonly="1"/>
+                                <field name="muc_dich" placeholder="Mục đích cuộc họp..."/>
+                            </group>
+                            <group string="Thời gian">
+                                <field name="start_datetime"/>
+                                <field name="end_datetime"/>
+                                <field name="duration_minutes" readonly="1"/>
+                                <field name="auto_release_time" readonly="1"/>
+                            </group>
+                        </group>
+                        <group>
+                            <group string="Người chủ trì">
+                                <field name="host_id"/>
+                                <field name="phong_ban_id" readonly="1"/>
+                            </group>
+                            <group string="Người tham dự">
+                                <field name="chuc_vu_tham_du_ids" widget="many2many_tags" 
+                                       options="{'no_create': True}"
+                                       help="Chọn chức vụ - tất cả nhân viên có chức vụ này sẽ được thêm vào danh sách tham dự"/>
+                                <field name="phong_ban_tham_du_ids" widget="many2many_tags"
+                                       options="{'no_create': True}"
+                                       help="Chọn phòng ban - tất cả nhân viên trong phòng ban này sẽ được thêm vào danh sách tham dự"/>
+                                <field name="attendee_ids" widget="many2many_tags" 
+                                       options="{'no_create': True}"
+                                       help="Danh sách người tham dự (tự động cập nhật khi chọn chức vụ/phòng ban)"/>
+                                <field name="so_nguoi_tham_du" readonly="1"/>
+                            </group>
+                        </group>
+                        <notebook>
+                            <page string="Dịch vụ kèm theo">
+                                <field name="dich_vu_ids">
+                                    <tree>
+                                        <field name="loai_dich_vu"/>
+                                        <field name="layout_type" attrs="{'invisible': [('loai_dich_vu', '!=', 'setup')]}"/>
+                                        <field name="so_ghe" attrs="{'invisible': [('loai_dich_vu', '!=', 'setup')]}"/>
+                                        <field name="so_luong_nguoi" attrs="{'invisible': [('loai_dich_vu', '!=', 'catering')]}"/>
+                                        <field name="menu" attrs="{'invisible': [('loai_dich_vu', '!=', 'catering')]}"/>
+                                        <field name="chi_phi"/>
+                                        <field name="state"/>
+                                    </tree>
+                                </field>
+                                <group>
+                                    <field name="co_catering" readonly="1"/>
+                                    <field name="tong_chi_phi" readonly="1"/>
+                                </group>
+                            </page>
+                            <page string="Check-in/Check-out">
+                                <group>
+                                    <field name="check_in_time" readonly="1"/>
+                                    <field name="check_out_time" readonly="1"/>
+                                    <field name="qr_code" widget="qr_code" readonly="1"/>
+                                </group>
+                            </page>
+                            <page string="Phê duyệt">
+                                <group>
+                                    <field name="can_approval" readonly="1"/>
+                                    <field name="approver_id" readonly="1"/>
+                                    <field name="approval_date" readonly="1"/>
+                                    <field name="ly_do_tu_choi" readonly="1"/>
+                                </group>
+                            </page>
+                            <page string="Ghi chú">
+                                <field name="ghi_chu" placeholder="Ghi chú..."/>
+                                <field name="ly_do_huy" readonly="1"/>
+                            </page>
+                            <page string="Đặt phòng nâng cao">
+                                <group>
+                                    <group string="Đặt phòng định kỳ">
+                                        <field name="is_recurring"/>
+                                        <field name="recurring_type" attrs="{'invisible': [('is_recurring', '=', False)], 'required': [('is_recurring', '=', True)]}"/>
+                                        <field name="recurring_end_date" attrs="{'invisible': [('is_recurring', '=', False)], 'required': [('is_recurring', '=', True)]}"/>
+                                        <field name="recurring_count" attrs="{'invisible': [('is_recurring', '=', False)]}"/>
+                                    </group>
+                                    <group string="Đặt nhiều phòng">
+                                        <field name="is_multi_room"/>
+                                        <field name="related_booking_ids" widget="many2many_tags" 
+                                               attrs="{'invisible': [('is_multi_room', '=', False)]}"
+                                               readonly="1"/>
+                                    </group>
+                                </group>
+                                <group>
+                                    <group string="Đặt thay người khác">
+                                        <field name="is_assistant_booking"/>
+                                        <field name="assistant_id" attrs="{'invisible': [('is_assistant_booking', '=', False)]}"/>
+                                    </group>
+                                    <group string="Thông tin khác">
+                                        <field name="is_outside_hours" readonly="1"/>
+                                        <field name="parent_booking_id" readonly="1" 
+                                               attrs="{'invisible': [('parent_booking_id', '=', False)]}"/>
+                                    </group>
+                                </group>
+                                <group string="Các booking định kỳ" attrs="{'invisible': [('recurring_booking_ids', '=', [])]}">
+                                    <field name="recurring_booking_ids" readonly="1" nolabel="1">
+                                        <tree>
+                                            <field name="name"/>
+                                            <field name="phong_hop_id"/>
+                                            <field name="start_datetime"/>
+                                            <field name="end_datetime"/>
+                                            <field name="state" widget="badge" 
+                                                   decoration-success="state == 'done'" 
+                                                   decoration-warning="state == 'in_progress'" 
+                                                   decoration-danger="state == 'cancelled'"/>
+                                        </tree>
+                                    </field>
+                                </group>
+                            </page>
+                        </notebook>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <!-- Calendar View -->
+        <record id="view_dat_phong_hop_calendar" model="ir.ui.view">
+            <field name="name">dat_phong_hop.view.calendar</field>
+            <field name="model">dat_phong_hop</field>
+            <field name="arch" type="xml">
+                <calendar string="Lịch đặt phòng" date_start="start_datetime" date_stop="end_datetime">
+                    <field name="name"/>
+                    <field name="phong_hop_id"/>
+                    <field name="host_id"/>
+                    <field name="state"/>
+                </calendar>
+            </field>
+        </record>
+
+        <!-- Tree View -->
+        <record id="view_dat_phong_hop_tree" model="ir.ui.view">
+            <field name="name">dat_phong_hop.view.tree</field>
+            <field name="model">dat_phong_hop</field>
+            <field name="arch" type="xml">
+                <tree string="Danh sách đặt phòng">
+                    <field name="ma_booking"/>
+                    <field name="name"/>
+                    <field name="phong_hop_id"/>
+                    <field name="host_id"/>
+                    <field name="start_datetime"/>
+                    <field name="end_datetime"/>
+                    <field name="so_nguoi_tham_du"/>
+                    <field name="state"/>
+                </tree>
+            </field>
+        </record>
+
+        <!-- Search View -->
+        <record id="view_dat_phong_hop_search" model="ir.ui.view">
+            <field name="name">dat_phong_hop.view.search</field>
+            <field name="model">dat_phong_hop</field>
+            <field name="arch" type="xml">
+                <search string="Tìm kiếm đặt phòng">
+                    <field name="ma_booking"/>
+                    <field name="name"/>
+                    <field name="phong_hop_id"/>
+                    <field name="host_id"/>
+                    <field name="attendee_ids"/>
+                    <field name="location_id"/>
+                    <filter string="Chờ duyệt" name="pending" domain="[('state', '=', 'pending_approval')]"/>
+                    <filter string="Đã duyệt" name="approved" domain="[('state', '=', 'approved')]"/>
+                    <filter string="Đang diễn ra" name="in_progress" domain="[('state', '=', 'in_progress')]"/>
+                    <filter string="No-show" name="no_show" domain="[('state', '=', 'no_show')]"/>
+                    <filter string="Hôm nay" name="today" domain="[('start_datetime', '>=', datetime.datetime.combine(context_today(), datetime.time(0,0,0))), ('start_datetime', '&lt;=', datetime.datetime.combine(context_today(), datetime.time(23,59,59)))]"/>
+                    <separator/>
+                    <filter string="Theo phòng" name="by_room" context="{'group_by': 'phong_hop_id'}"/>
+                    <filter string="Theo địa điểm" name="by_location" context="{'group_by': 'location_id'}"/>
+                    <filter string="Theo trạng thái" name="by_state" context="{'group_by': 'state'}"/>
+                </search>
+            </field>
+        </record>
+
+        <!-- Action -->
+        <record id="action_dat_phong_hop" model="ir.actions.act_window">
+            <field name="name">Đặt phòng họp</field>
+            <field name="res_model">dat_phong_hop</field>
+            <field name="view_mode">calendar,tree,form</field>
+            <field name="context">{'search_default_today': 1}</field>
+        </record>
+    </data>
+</odoo>

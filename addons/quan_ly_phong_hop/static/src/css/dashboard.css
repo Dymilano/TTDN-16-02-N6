@@ -1,0 +1,189 @@
+/* Dashboard Phòng Họp - Spica Template Style */
+
+.o_dashboards {
+    padding: 0;
+    background-color: #f8f9fa;
+}
+
+.o_dashboard_common {
+    padding: 20px;
+}
+
+.o_dashboard_view {
+    padding: 0;
+}
+
+/* Spica-style Cards */
+.o_dashboard_card {
+    border-radius: 4px;
+    box-shadow: 0 0 1px 0 rgba(0,0,0,.05), 0 1px 2px 0 rgba(0,0,0,.1);
+    border: none;
+    transition: all 0.3s ease;
+    margin-bottom: 1.5rem;
+}
+
+.o_dashboard_card:hover {
+    box-shadow: 0 0 1px 0 rgba(0,0,0,.05), 0 1px 3px 0 rgba(0,0,0,.1), 0 2px 6px 0 rgba(0,0,0,.1);
+    transform: translateY(-2px);
+}
+
+.o_dashboard_card .card-body {
+    padding: 1.5rem;
+}
+
+.o_dashboard_card .card-header {
+    padding: 1rem 1.5rem;
+    background-color: #fff;
+    border-bottom: 1px solid #e9ecef;
+    font-weight: 500;
+}
+
+/* KPI Cards - Spica Style */
+.o_dashboard_stat_cards .card {
+    min-height: 140px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.o_dashboard_stat_cards .card-body {
+    text-align: center;
+    padding: 1.5rem;
+}
+
+.o_dashboard_stat_cards .card-title {
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: #6c757d;
+    margin-bottom: 0.5rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.o_dashboard_stat_cards .card-text,
+.o_dashboard_stat_cards h2 {
+    font-size: 2rem;
+    font-weight: 600;
+    margin-bottom: 0;
+    line-height: 1.2;
+}
+
+/* Grid margins - Spica style */
+.grid-margin {
+    margin-bottom: 1.5rem;
+}
+
+.stretch-card {
+    display: flex;
+    align-items: stretch;
+    justify-content: stretch;
+}
+
+.stretch-card > .card {
+    width: 100%;
+    min-height: 100%;
+}
+
+/* Chart containers */
+.o_dashboard_card canvas {
+    max-height: 400px;
+}
+
+/* Tables - Spica style */
+.o_dashboard_card .table {
+    margin-bottom: 0;
+}
+
+.o_dashboard_card .table thead th {
+    border-top: none;
+    border-bottom: 2px solid #e9ecef;
+    font-weight: 600;
+    font-size: 0.875rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: #495057;
+    padding: 1rem;
+}
+
+.o_dashboard_card .table tbody td {
+    padding: 0.75rem 1rem;
+    vertical-align: middle;
+    border-top: 1px solid #e9ecef;
+}
+
+.o_dashboard_card .table tbody tr:hover {
+    background-color: #f8f9fa;
+}
+
+/* Filter section */
+.o_dashboard_card .form-control {
+    border-radius: 4px;
+    border: 1px solid #ced4da;
+    padding: 0.5rem 0.75rem;
+    font-size: 0.875rem;
+}
+
+.o_dashboard_card .btn {
+    border-radius: 4px;
+    padding: 0.5rem 1rem;
+    font-weight: 500;
+    font-size: 0.875rem;
+}
+
+/* Title section */
+.o_dashboard_common > div:first-child {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: #212529;
+    margin-bottom: 1.5rem;
+    padding-bottom: 0.75rem;
+    border-bottom: 2px solid #e9ecef;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .o_dashboard_stat_cards .card-text,
+    .o_dashboard_stat_cards h2 {
+        font-size: 1.5rem;
+    }
+    
+    .o_dashboard_card .card-body {
+        padding: 1rem;
+    }
+}
+
+/* Spica color scheme */
+.text-primary { color: #6640b2 !important; }
+.text-success { color: #1faf47 !important; }
+.text-info { color: #1cbccd !important; }
+.text-warning { color: #ff9800 !important; }
+.text-danger { color: #ff4c5b !important; }
+
+.bg-primary { background-color: #6640b2 !important; }
+.bg-success { background-color: #1faf47 !important; }
+.bg-info { background-color: #1cbccd !important; }
+.bg-warning { background-color: #ff9800 !important; }
+.bg-danger { background-color: #ff4c5b !important; }
+
+/* Heatmap container */
+#heatmapContainer {
+    overflow-x: auto;
+    padding: 1rem 0;
+}
+
+/* Activity feed */
+.recent-activities-item {
+    padding: 0.75rem 0;
+    border-bottom: 1px solid #e9ecef;
+}
+
+.recent-activities-item:last-child {
+    border-bottom: none;
+}
+
+/* Loading state */
+.loading-placeholder {
+    text-align: center;
+    padding: 2rem;
+    color: #6c757d;
+}
